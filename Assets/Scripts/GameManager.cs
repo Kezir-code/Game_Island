@@ -2,63 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static int kamien;
-    public static int drewno;
-    public static int woda;
-    public static int dzien = 0;
-//    0 - rano
-//    1 - popoludnie
-//    2 - wieczor
-    public int pora_dnia = 0; 
-
-    // Start is called before the first frame update
+    public Transform[] screens;
+    public GameObject[] screenUI;
+    private GameObject activeScreen;
+    private Camera camera;
     void Start()
     {
-        
-    }
-    public void Zmiana_Pory_Dnia()
-    {
-            
-            pora_dnia = (pora_dnia + 1) % 3;    
-        
-    }
-
-    public void Zmiana_kamien(int kamien_update)
-    {
-        int result = kamien + kamien_update;
-        if(result >= 0)
-        {
-            kamien = result;
-        }
-    }
-
-     public void Zmiana_wody(int woda_update)
-    {
-        int result = woda + woda_update;
-        if (result >= 0)
-        {
-            woda = result;
-        }
-    }
-    public void Zmiana_drewno(int drewno_update)
-    {
-        int result = drewno + drewno_update;
-        if (result >= 0)
-        {
-            drewno = result;
-        } 
-    }
-    public void Zmiana_dnia()
-    {
-        dzien++;
+        camera = CameraMovement.Instance.GetComponent<Camera>();
+        activeScreen = screenUI[1];
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public void MoveCameraMapa()
+    {
+        camera.transform.GetComponent<CameraMovement>().target = screens[0].position;
+        SetActiveScreen(screenUI[0]);
+    }
+
+    public void MoveCameraScreen1()
+    {
+        camera.transform.GetComponent<CameraMovement>().target = screens[1].position;
+        SetActiveScreen(screenUI[1]);
+    }
+
+    private void SetActiveScreen(GameObject name)
+    {
+        activeScreen.SetActive(false);
+        activeScreen = name;
+        activeScreen.SetActive(true);
+
     }
 
 }
