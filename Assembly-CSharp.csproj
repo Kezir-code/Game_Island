@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Mapa\LevelManager.cs" />
     <Compile Include="Assets\Scripts\Mapa\Point.cs" />
     <Compile Include="Assets\Scripts\Mapa\TileScript.cs" />
+    <Compile Include="Assets\Scripts\MusicPlayer.cs" />
     <Compile Include="Assets\Scripts\Raycast-SelectionManager.cs" />
     <Compile Include="Assets\Scripts\Singleton.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
