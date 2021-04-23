@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -17,7 +18,7 @@ public class GameManager : Singleton<GameManager>
     public GameObject[] ludzie;
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -28,9 +29,7 @@ public class GameManager : Singleton<GameManager>
 
     public void Zmiana_Pory_Dnia()
     {
-
         pora_dnia = (pora_dnia + 1) % 3;
-
     }
 
     public void Zmiana_kamien(int kamien_update)
