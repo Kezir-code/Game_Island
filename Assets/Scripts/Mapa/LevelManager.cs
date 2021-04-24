@@ -64,7 +64,7 @@ public class LevelManager : Singleton<LevelManager>
             if(tileIndex == 9)
             {
                 TileScript newTile = Instantiate(tiles[1]).GetComponent<TileScript>();
-                newTile.Setup(new Point(x, y), new Vector3(worldStart.x + (TileSize * x), worldStart.y - (TileSize * y) + 12, 60), map);
+                newTile.Setup(new Point(x, y), new Vector3(worldStart.x + (TileSize * x), worldStart.y - (TileSize * y) + 12, 10), map);
                 newTile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.3f);
                 // Distance
                 //GameObject currentPos_ = Instantiate(currentPos);
@@ -74,7 +74,7 @@ public class LevelManager : Singleton<LevelManager>
             else
             {
                 TileScript newTile = Instantiate(tiles[tileIndex]).GetComponent<TileScript>();
-                newTile.Setup(new Point(x, y), new Vector3(worldStart.x + (TileSize * x), worldStart.y - (TileSize * y) + 12, 60), map);
+                newTile.Setup(new Point(x, y), new Vector3(worldStart.x + (TileSize * x), worldStart.y - (TileSize * y) + 12, 10), map);
             }
             
         }
