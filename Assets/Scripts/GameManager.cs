@@ -6,15 +6,20 @@ public class GameManager : Singleton<GameManager>
 {
 
     [Header("Zmienne")]
-    public static int kamien;
-    public static int drewno;
-    public static int woda;
+    public static int kamien = 0;
+    public static int drewno = 0;
+    public static int woda = 0;
     public static int dzien = 0;
-    //    0 - rano
-    //    1 - popoludnie
-    //    2 - wieczor
-    public int pora_dnia = 0;
+    public static int jedzenie = 0;
+    public static int grupowaStamina = 100;
+    //      0 - rano
+    //      1 - popoludnie
+    //      2 - wieczor
+    //      3 - noc    
+    public static int pora_dnia = 0;
     public GameObject[] ludzie;
+
+    // Start is called before the first frame update
     void Start()
     {
 
@@ -23,7 +28,7 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Zmiana_Pory_Dnia()
@@ -58,9 +63,21 @@ public class GameManager : Singleton<GameManager>
             drewno = result;
         }
     }
+
+    public void Zmiana_jedzenia(int jedzenie_update)
+    {
+        int result = jedzenie + jedzenie_update;
+        if (result >= 0)
+        {
+            jedzenie = result;
+        }
+    }
+
     public void Zmiana_dnia()
     {
         dzien++;
     }
+
+
 
 }
