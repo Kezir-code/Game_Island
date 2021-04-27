@@ -8,6 +8,12 @@ public class GameManager : Singleton<GameManager>
     public GameObject[] screenUI;
     private GameObject activeScreen;
     private Camera camera;
+    public List<GameObject> people;
+    public int drewno;
+    public int pora_dnia;
+    public int stamina;
+    public int kamien;
+    public int jedzenie;
     void Start()
     {
         camera = CameraMovement.Instance.GetComponent<Camera>();
