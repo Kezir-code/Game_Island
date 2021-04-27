@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     public static int drewno;
     public static int woda;
     public static int dzien = 0;
+    public GameObject Pauza;
     //    0 - rano
     //    1 - popoludnie
     //    2 - wieczor
@@ -24,7 +25,7 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 
     public void Zmiana_Pory_Dnia()
@@ -61,5 +62,7 @@ public class GameManager : Singleton<GameManager>
     {
         dzien++;
     }
+   
+    
 
 }

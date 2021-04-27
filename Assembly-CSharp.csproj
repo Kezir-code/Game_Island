@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AddOne.cs" />
-    <Compile Include="Assets\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\CameraMov\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\CameraMov\SceneMovement.cs" />
     <Compile Include="Assets\Scripts\CharacterCreator.cs" />
@@ -74,6 +73,7 @@
     <Compile Include="Assets\Scripts\Mapa\LevelManager.cs" />
     <Compile Include="Assets\Scripts\Mapa\Point.cs" />
     <Compile Include="Assets\Scripts\Mapa\TileScript.cs" />
+    <Compile Include="Assets\Scripts\PauzaMenu.cs" />
     <Compile Include="Assets\Scripts\SelectionManager.cs" />
     <Compile Include="Assets\Scripts\Singleton.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
