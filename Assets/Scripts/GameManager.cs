@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+
+
 
 public class GameManager : Singleton<GameManager>
 {
@@ -14,6 +18,10 @@ public class GameManager : Singleton<GameManager>
     public int stamina;
     public int kamien;
     public int jedzenie;
+
+    public Text jedzenieText;
+    public Text wodaText;
+
     void Start()
     {
         camera = CameraMovement.Instance.GetComponent<Camera>();
@@ -22,12 +30,17 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     void Update()
     {
-        
+        woda += 1;
+        jedzenie += 1;
+        Aktualizacja_UI_Surowce();
+
     }
 
     public void Zmiana_Pory_Dnia()
     {
+
         pora_dnia = (pora_dnia + 1) % 3;
+
     }
 
     public void Zmiana_kamien(int kamien_update)
@@ -60,4 +73,14 @@ public class GameManager : Singleton<GameManager>
         dzien++;
     }
 
+    public void Aktualizacja_UI_Surowce()
+    {
+
+        wodaText.text = woda.ToString();
+        jedzenieText.text = jedzenie.ToString();
+        Debug.Log(wodaText.text);
+        Debug.Log(jedzenieText.text);
+        Debug.Log(woda.ToString());
+        Debug.Log(jedzenie.ToString());
+    }
 }
