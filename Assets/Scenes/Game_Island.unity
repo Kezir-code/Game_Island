@@ -644,9 +644,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 703406447}
+  - component: {fileID: 703406448}
   m_Layer: 5
   m_Name: ZarzadzaniePraca
-  m_TagString: Untagged
+  m_TagString: ZarzadzaniePraca
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -670,6 +671,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &703406448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 703406446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 700c9cb9595437549a6f3dbb44780ae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guzik: {fileID: 2994394055453144269, guid: 8f8fd247a110b7f45b39144eb9897892, type: 3}
+  "liczbaGuzik\xF3w": 5
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
