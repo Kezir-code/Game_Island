@@ -14,6 +14,16 @@ public class GameManager : Singleton<GameManager>
     public int stamina;
     public int kamien;
     public int jedzenie;
+    public int zelazo;
+
+    // Pojemność magazynu
+    public int pojemnoscJedzenia = 100;   // default 100
+    public int pojemnoscWody = 200;       // default 200  
+    public int pojemnoscSurowcow = 300;   // default 300
+
+
+
+
     void Start()
     {
         camera = CameraMovement.Instance.GetComponent<Camera>();

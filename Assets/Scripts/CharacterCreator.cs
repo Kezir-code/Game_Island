@@ -8,4 +8,5 @@ public class CharacterCreator : MonoBehaviour
     public string surname;
     public bool isAlive;
     public int lvl;
+    public int turyDoKoncaPracy;
 }
