@@ -2083,7 +2083,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1782703181
 GameObject:
@@ -2387,7 +2387,7 @@ RectTransform:
   - {fileID: 1628451029}
   - {fileID: 1760969369}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2535,3 +2535,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102032190}
   m_CullTransparentMesh: 1
+--- !u!1001 &2248675446057461521
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -13.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.1299119
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.578648
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.45251915
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.89175475
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -126.189
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389817903443353223, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8697163402431710882, guid: 78be317d9281e864fa3ed114423177b7,
+        type: 3}
+      propertyPath: m_Name
+      value: Beniamin Kozyra
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 78be317d9281e864fa3ed114423177b7, type: 3}
