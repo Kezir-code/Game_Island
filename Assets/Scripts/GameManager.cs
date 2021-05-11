@@ -14,6 +14,7 @@ public class GameManager : Singleton<GameManager>
     public int stamina;
     public int kamien;
     public int jedzenie;
+    public GameObject activeBuilding;
     void Start()
     {
         camera = CameraMovement.Instance.GetComponent<Camera>();
@@ -58,6 +59,10 @@ public class GameManager : Singleton<GameManager>
     public void Zmiana_dnia()
     {
         dzien++;
+    }
+     public void PracaUI()
+    {
+        Debug.Log(activeBuilding.name);
     }
 
 }
