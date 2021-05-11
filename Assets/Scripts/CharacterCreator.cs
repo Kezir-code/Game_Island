@@ -9,4 +9,5 @@ public class CharacterCreator : MonoBehaviour
     public bool isAlive;
     public int lvl;
     public int turyDoKoncaPracy;
+    public bool czyPracuje;
 }

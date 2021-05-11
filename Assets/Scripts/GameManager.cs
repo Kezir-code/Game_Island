@@ -70,4 +70,15 @@ public class GameManager : Singleton<GameManager>
         dzien++;
     }
 
-}
+    public void ZliczStamine()
+    {
+        foreach(GameObject kalski in people)
+        {
+            CharacterCreator character = kalski.GetComponent<CharacterCreator>();
+            if (!character.czyPracuje)
+            {
+                stamina++;
+            }
+        }
+    } // zlicz stamine
+}// class

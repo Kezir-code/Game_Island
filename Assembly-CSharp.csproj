@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Buildings\FishingPier.cs" />
-    <Compile Include="Assets\Scripts\Buildings\Quarry.cs" />
     <Compile Include="Assets\Scripts\Buildings\Sawmill.cs" />
     <Compile Include="Assets\Scripts\Buildings\Warehouse.cs" />
     <Compile Include="Assets\Scripts\CameraMov\CameraMovement.cs" />

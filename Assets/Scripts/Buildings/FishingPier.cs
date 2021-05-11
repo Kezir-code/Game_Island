@@ -24,13 +24,17 @@ public class FishingPier : MonoBehaviour
 	//-20 jedzenia
 
 	//upgrade
-	private short[] timeToEndBuilding = new short[2] { 2, 8 };
-	private short[,] costUpgrade = new short[2, 2] { { 20, 10 }, { 40, 20} };
+	private short timeToEndBuilding =  12;
+	private short[,] costUpgrade = new short[2, 3] { { 30, 0, 0 }, { 40, 20, 6} };
+	public static short pozostaleTuryDoBudowy = 0;
+
 
 	public GameObject prefabFishingPierTier1;
 	public GameObject prefabFishingPierTier2;
 
 	private GameObject fishingPier;
+
+	private readonly GameManager gM = GameManager.Instance;
 
 	void Start()
 	{
@@ -72,22 +76,24 @@ public class FishingPier : MonoBehaviour
 			if (worker.turyDoKoncaPracy == 0)
 			{
 				worker.turyDoKoncaPracy = czasPracy; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
+				worker.czyPracuje = true;
 			}
 			// Czy bedzię pętla?	
 			// 3 - to noc, a w nocy nie pracujemy 		
-			if (GameManager.Instance.pora_dnia != 3)
+			if (gM.pora_dnia != 3)
 			{
 				worker.turyDoKoncaPracy--;
 			}
 
 			if (worker.turyDoKoncaPracy == 1)
 			{
-				GameManager.Instance.Zmiana_drewno(getSurowce[tierPomostRybacki - 1]);
-				GameManager.Instance.stamina -= minusStamina;
+				gM.Zmiana_drewno(getSurowce[tierPomostRybacki - 1]);
+				gM.stamina -= minusStamina;
 				worker.turyDoKoncaPracy = 0;
+				worker.czyPracuje = false;
 
 				Debug.Log("Robotnik " + worker.name + " wyprodukował: " + getSurowce[tierPomostRybacki - 1]);
-				Debug.Log("Poziom jedzenia wynosi:" + GameManager.Instance.drewno);
+				Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
 			}
 
 		}
@@ -107,39 +113,69 @@ public class FishingPier : MonoBehaviour
 			//	Tier 1: (czas budowy 4 tur)
 			//		-Drewno 10
 			case 0:
-				if (GameManager.Instance.drewno < costUpgrade[0, 0] &&
-					GameManager.Instance.jedzenie < costUpgrade[0, 1])
-				{
-					// Dla ludzi tworzących UI zrobić powiadomienie 
-					Debug.Log("Nie masz wystarczająco surowców");
-					return;
+                if (pozostaleTuryDoBudowy == 0)
+                {
+					if (gM.drewno < costUpgrade[tierPomostRybacki, 0])
+					{
+						// Dla ludzi tworzących UI zrobić powiadomienie 
+						Debug.Log("Nie masz wystarczająco surowców");
+						return;
+					}
+
+					gM.drewno -= costUpgrade[tierPomostRybacki, 0];
+					pozostaleTuryDoBudowy = (short)(timeToEndBuilding + 1);
 				}
 
-				GameManager.Instance.drewno -= costUpgrade[0, 0];
-				GameManager.Instance.jedzenie -= costUpgrade[0, 1];
+                else if (pozostaleTuryDoBudowy == 1)
+                {
+					fishingPier = (GameObject)Instantiate(prefabFishingPierTier1, GetBuildPostion(), transform.rotation);
+					tierPomostRybacki++;
+					pozostaleTuryDoBudowy = 0;
+				}
 
-				fishingPier = (GameObject)Instantiate(prefabFishingPierTier1, GetBuildPostion(), transform.rotation);
-				tierPomostRybacki++;
+				else
+				{
+					Debug.Log($"Pozostały czas do wybudowania pomostu rybackiego to: {pozostaleTuryDoBudowy - 1}"); // #2
+					pozostaleTuryDoBudowy--; // # 2
+				}
 
-				break;
+				break; //case 0
 
 
 
 			case 1:
-				if (GameManager.Instance.drewno < costUpgrade[1, 0] &&
-					GameManager.Instance.jedzenie < costUpgrade[1, 1])
-				{
-					Debug.Log("Nie masz wystarczająco surowców");
-					return;
-				}
-				GameManager.Instance.drewno -= costUpgrade[1, 0];
-				GameManager.Instance.jedzenie -= costUpgrade[1, 1];
+                if (pozostaleTuryDoBudowy == 0)
+                {
+					if (gM.drewno < costUpgrade[tierPomostRybacki, 0] &&
+						gM.kamien < costUpgrade[tierPomostRybacki, 1] &&
+						gM.zelazo < costUpgrade[tierPomostRybacki, 2])
+					{
+						Debug.Log("Nie masz wystarczająco surowców");
+						return;
+					}
 
-				Destroy(fishingPier);
-				GameObject QuarryTier2 = (GameObject)Instantiate(prefabFishingPierTier2, GetBuildPostion(), transform.rotation);
-				fishingPier = QuarryTier2;
-				tierPomostRybacki++;
-				break;
+					gM.drewno -= costUpgrade[tierPomostRybacki, 0];
+					gM.kamien -= costUpgrade[tierPomostRybacki, 1];
+					gM.zelazo -= costUpgrade[tierPomostRybacki, 2];
+					pozostaleTuryDoBudowy = (short)(timeToEndBuilding + 1);	 // # 13
+				}
+
+				else if (pozostaleTuryDoBudowy == 1)
+				{
+					Destroy(fishingPier);
+					GameObject FishingPierTier2 = (GameObject)Instantiate(prefabFishingPierTier2, GetBuildPostion(), transform.rotation);
+					fishingPier = FishingPierTier2;
+					tierPomostRybacki++;
+				}
+
+				else
+				{
+					Debug.Log($"Pozostały czas do ulepszenia pomostu rybackiego to: {pozostaleTuryDoBudowy - 1}"); // #12
+					pozostaleTuryDoBudowy--; // # 12
+				}
+
+
+				break; // case 1
 		
 		}	
 			

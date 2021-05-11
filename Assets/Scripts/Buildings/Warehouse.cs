@@ -26,11 +26,16 @@ public class Warehouse : MonoBehaviour
     /// Index 0 - Do wybudowania 
     /// </summary>
     private short[,] costUpgrade = new short[2, 3] { { 10, 0, 0 }, { 35, 20, 0 }};
+    //public static short pozostaleTuryDoBudowy = 0;
+    //public static short pozostaleTuryDoBudowy = 0;
+    //private short[] timeToEndBuilding = new short[3] { 4, 8, 12 };
 
     public GameObject prefabWarehouseTier1;
     public GameObject prefabWarehouseTier2;
 
     public GameObject warehouse;
+
+    private GameManager gM = GameManager.Instance;
 
 
 
@@ -71,33 +76,33 @@ public class Warehouse : MonoBehaviour
     public void SprawdzPojemnoscMaxSurowcow()
     {
         //Sprawdza warunek dla wody
-        if (GameManager.Instance.woda > GameManager.Instance.pojemnoscWody)
+        if (gM.woda > gM.pojemnoscWody)
         {
-            GameManager.Instance.woda = GameManager.Instance.pojemnoscWody;
+            gM.woda = gM.pojemnoscWody;
         }
 
         //Sprawdza warunek dla jedzenia
-        if (GameManager.Instance.jedzenie > GameManager.Instance.pojemnoscJedzenia)
+        if (gM.jedzenie > gM.pojemnoscJedzenia)
         {
-            GameManager.Instance.jedzenie = GameManager.Instance.pojemnoscJedzenia;
+            gM.jedzenie = gM.pojemnoscJedzenia;
         }
 
         //Sprawdza warunek dla kamiena
-        if (GameManager.Instance.kamien > GameManager.Instance.pojemnoscSurowcow)
-        {                                                      
-            GameManager.Instance.kamien = GameManager.Instance.pojemnoscSurowcow;
+        if (gM.kamien > gM.pojemnoscSurowcow)
+        {
+            gM.kamien = gM.pojemnoscSurowcow;
         }
 
         //Sprawdza warunek dla drewna
-        if (GameManager.Instance.drewno > GameManager.Instance.pojemnoscSurowcow)
-        {                                                      
-            GameManager.Instance.drewno = GameManager.Instance.pojemnoscSurowcow;
+        if (gM.drewno > gM.pojemnoscSurowcow)
+        {
+            gM.drewno = gM.pojemnoscSurowcow;
         }
 
         //Sprawdza warunek dla zelaza
-        if (GameManager.Instance.zelazo > GameManager.Instance.pojemnoscSurowcow)
+        if (gM.zelazo > gM.pojemnoscSurowcow)
         {
-            GameManager.Instance.zelazo = GameManager.Instance.pojemnoscSurowcow;
+            gM.zelazo = gM.pojemnoscSurowcow;
         }
     }
     #endregion
@@ -118,9 +123,9 @@ public class Warehouse : MonoBehaviour
 
         warehouse = (GameObject)Instantiate(prefabWarehouseTier1, GetBuildPostion(), transform.rotation);
 
-        GameManager.Instance.pojemnoscJedzenia += plusIloscMiejsca[0];
-        GameManager.Instance.pojemnoscWody += plusIloscMiejsca[1];
-        GameManager.Instance.pojemnoscSurowcow += plusIloscMiejsca[2];
+        gM.pojemnoscJedzenia += plusIloscMiejsca[0];
+        gM.pojemnoscWody += plusIloscMiejsca[1];
+        gM.pojemnoscSurowcow += plusIloscMiejsca[2];
         Debug.Log("Wodzu! Magazyn zbudowany!");
     }
 
@@ -131,9 +136,9 @@ public class Warehouse : MonoBehaviour
         warehouse = _warehouse;
 
 
-        GameManager.Instance.pojemnoscJedzenia += plusIloscMiejsca[0];
-        GameManager.Instance.pojemnoscWody += plusIloscMiejsca[1];
-        GameManager.Instance.pojemnoscSurowcow += plusIloscMiejsca[2];
+        gM.pojemnoscJedzenia += plusIloscMiejsca[0];
+        gM.pojemnoscWody += plusIloscMiejsca[1];
+        gM.pojemnoscSurowcow += plusIloscMiejsca[2];
         Debug.Log("Wodzu! Magazyn ulepszony!");
     }
     #endregion
