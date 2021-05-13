@@ -14,6 +14,25 @@ public class GameManager : Singleton<GameManager>
     public int stamina;
     public int kamien;
     public int jedzenie;
+    public int zelazo;
+
+    // Pojemność magazynu
+    public int pojemnoscJedzenia = 100;   // default 100
+    public int pojemnoscWody = 200;       // default 200  
+    public int pojemnoscSurowcow = 300;   // default 300
+
+    //bonusy z ogniska itp.
+    public bool ogniskoBonus;
+    public bool kuchniaBonus;
+
+    //Legowsiko
+    public int tierLegowskia;
+
+    //kuznia/warsztat
+    public bool stoneAge;
+    public bool ironAge;
+
+
     void Start()
     {
         camera = CameraMovement.Instance.GetComponent<Camera>();
@@ -47,6 +66,7 @@ public class GameManager : Singleton<GameManager>
             woda = result;
         }
     }
+
     public void Zmiana_drewno(int drewno_update)
     {
         int result = drewno + drewno_update;
@@ -55,9 +75,28 @@ public class GameManager : Singleton<GameManager>
             drewno = result;
         }
     }
+    
     public void Zmiana_dnia()
     {
         dzien++;
     }
 
-}
+    public void ZliczStamine()
+    {
+        foreach(GameObject kalski in people)
+        {
+            CharacterCreator character = kalski.GetComponent<CharacterCreator>();
+            if (!character.czyPracuje)
+            {
+                if (tierLegowskia == 0)
+                {
+                    stamina++;
+                }
+                else
+                {
+                    stamina = tierLegowskia + 1;
+                }
+            }
+        }
+    } // zlicz stamine
+}// class
