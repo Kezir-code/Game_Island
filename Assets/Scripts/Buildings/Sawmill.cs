@@ -6,7 +6,8 @@ using UnityEngine;
 // Sprawdz czy tier tartaku jest taki jaki potrzeba
 // Zrobić budowanie
 
-public class Sawmill : MonoBehaviour 
+
+	public class Sawmill : MonoBehaviour 
 {
 	//	- Wymaga pracownika
 	//	- Generuje 5/20/35 (na dzień 4 tury)
@@ -14,10 +15,10 @@ public class Sawmill : MonoBehaviour
 	//praca
 	private short tierTartaku = 0;
 	private short[] getSurowce = new short[3] { 5, 20, 35};
-	private short czasPracy = 5; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
+	private short czasPracy = 3; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
 	//	-Wymagania:
 	//	Tier 1: (czas budowy 4 tur)
-	//		-Drewno 10
+	//		-Drewno 5
 	//	Tier 2: (czas budowy 8 tur)
 	//		-Kamień 20
 	//		-Drewno 35
@@ -28,7 +29,7 @@ public class Sawmill : MonoBehaviour
 	//		-Żelazo 18
 
 	//upgrade
-	private short[,] costUpgrade = new short[3, 3] { { 10, 0, 0 }, { 35, 20, 0 }, { 70, 50, 18 } };
+	private short[,] costUpgrade = new short[3, 3] { { 5, 0, 0 }, { 35, 20, 0 }, { 70, 50, 18 } };
 	private short[] timeToEndBuilding = new short[3] { 4, 8, 12 };
 	public static short pozostaleTuryDoBudowy = 0;
 	public short minusStamina = 4;
@@ -86,15 +87,21 @@ public class Sawmill : MonoBehaviour
 			}
 			// Czy bedzię pętla?	
 			// 3 - to noc, a w nocy nie pracujemy 		
-			if (gM.pora_dnia != 3)
+			if (gM.pora_dnia != 3 &&			 
+				gM.stamina >= minusStamina)
 			{
-				worker.turyDoKoncaPracy--;
+				worker.turyDoKoncaPracy--;					
+				gM.stamina -= minusStamina;			
+			}
+            else if (gM.stamina < minusStamina) 
+            {
+				worker.czyPracuje = false;
+				Debug.Log("Brakuje staminy");
 			}
 
-			if (worker.turyDoKoncaPracy == 1)
+			if (worker.turyDoKoncaPracy == 1 )
 			{
 				gM.Zmiana_drewno(getSurowce[tierTartaku - 1]);
-				gM.stamina -= minusStamina;
 				worker.turyDoKoncaPracy = 0;
 				worker.czyPracuje = false;
 				Debug.Log("Robotnik " + worker.name + " wyprodukował: " + getSurowce[tierTartaku - 1]);
@@ -121,14 +128,14 @@ public class Sawmill : MonoBehaviour
 			case 0:
                 if (pozostaleTuryDoBudowy == 0)
                 {
-					if (gM.drewno < costUpgrade[0, 0])
+					if (gM.drewno < costUpgrade[tierTartaku, 0])
 					{
 						// Dla ludzi tworzących UI zrobić powiadomienie 
 						Debug.Log("Nie masz wystarczająco surowców");
 						return;
 					}
 
-					gM.drewno -= costUpgrade[0, 0];
+					gM.drewno -= costUpgrade[tierTartaku, 0];
 					pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierTartaku] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
 				}
 
@@ -199,7 +206,7 @@ public class Sawmill : MonoBehaviour
 
 					gM.drewno -= costUpgrade[2, 0];
 					gM.kamien -= costUpgrade[2, 1];
-					gM.kamien -= costUpgrade[2, 2];
+					gM.zelazo -= costUpgrade[2, 2];
 					pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierTartaku] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 13
 
 				}

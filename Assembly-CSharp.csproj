@@ -64,9 +64,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Buildings\Campfire.cs" />
+    <Compile Include="Assets\Scripts\Buildings\Den.cs" />
     <Compile Include="Assets\Scripts\Buildings\FishingPier.cs" />
+    <Compile Include="Assets\Scripts\Buildings\Garden.cs" />
     <Compile Include="Assets\Scripts\Buildings\Sawmill.cs" />
     <Compile Include="Assets\Scripts\Buildings\Warehouse.cs" />
+    <Compile Include="Assets\Scripts\Buildings\WaterCollector.cs" />
+    <Compile Include="Assets\Scripts\Buildings\Workshop.cs" />
     <Compile Include="Assets\Scripts\CameraMov\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\CameraMov\SceneMovement.cs" />
     <Compile Include="Assets\Scripts\CharacterCreator.cs" />

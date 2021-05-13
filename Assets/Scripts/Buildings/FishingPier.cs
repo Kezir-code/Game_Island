@@ -11,7 +11,7 @@ public class FishingPier : MonoBehaviour
 	//praca
 	public static short tierPomostRybacki = 0;
 	private short[] getSurowce = new short[2] { 40, 90};
-	public short minusStamina = 1;
+	//public short minusStamina = 1;
 	private short czasPracy = 5; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
 
 
@@ -27,6 +27,8 @@ public class FishingPier : MonoBehaviour
 	private short timeToEndBuilding =  12;
 	private short[,] costUpgrade = new short[2, 3] { { 30, 0, 0 }, { 40, 20, 6} };
 	public static short pozostaleTuryDoBudowy = 0;
+
+	public float mnoznikZKuchni = 1.2f; // wstawić to do gamemanger'a?
 
 
 	public GameObject prefabFishingPierTier1;
@@ -87,11 +89,18 @@ public class FishingPier : MonoBehaviour
 
 			if (worker.turyDoKoncaPracy == 1)
 			{
-				gM.Zmiana_drewno(getSurowce[tierPomostRybacki - 1]);
-				gM.stamina -= minusStamina;
+				if (gM.kuchniaBonus == true)
+				{
+					gM.jedzenie = (int)(getSurowce[tierPomostRybacki - 1] * mnoznikZKuchni);
+				}
+                else
+                {
+					gM.jedzenie = getSurowce[tierPomostRybacki - 1];
+				}
+				//gM.stamina -= minusStamina;
 				worker.turyDoKoncaPracy = 0;
 				worker.czyPracuje = false;
-
+				
 				Debug.Log("Robotnik " + worker.name + " wyprodukował: " + getSurowce[tierPomostRybacki - 1]);
 				Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
 			}
@@ -141,8 +150,6 @@ public class FishingPier : MonoBehaviour
 
 				break; //case 0
 
-
-
 			case 1:
                 if (pozostaleTuryDoBudowy == 0)
                 {
@@ -174,12 +181,10 @@ public class FishingPier : MonoBehaviour
 					pozostaleTuryDoBudowy--; // # 12
 				}
 
-
 				break; // case 1
 		
 		}	
 			
-
 	}
 	#endregion
 }
