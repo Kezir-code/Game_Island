@@ -34,6 +34,7 @@ using UnityEngine;
 	public static short pozostaleTuryDoBudowy = 0;
 	public short minusStamina = 4;
 
+	public List<CharacterCreator> listaOsobDoPracy;
 	public GameObject prefabSawmillTier1;
 	public GameObject prefabSawmillTier2;
 	public GameObject prefabSawmillTier3;
@@ -75,9 +76,9 @@ using UnityEngine;
 
     #region Praca
 
-    public void PracaWTartaku(List<CharacterCreator> characterCreators)
+    public void PracaWTartaku()
 	{
-        foreach (CharacterCreator worker in characterCreators)
+        foreach (CharacterCreator worker in listaOsobDoPracy)
         {
 			//int i = characterCreators.Count; // 0,1,2 czy 1,2,3?
 			if (worker.turyDoKoncaPracy == 0)

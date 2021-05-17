@@ -543,7 +543,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f0a27e8ef9a16499b109d84a666e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  people: []
+  people:
+  - {fileID: 6858308260941868464, guid: 0c365bafebad87b438562561c3641476, type: 3}
+  - {fileID: 8697163402431710882, guid: 78be317d9281e864fa3ed114423177b7, type: 3}
+  - {fileID: 6776987445108185313, guid: 990c87cf7ad982e419959130991176e6, type: 3}
+  - {fileID: 4849217948562444851, guid: 8ba40efa822e0444089ef0ef7ffd65e4, type: 3}
+  - {fileID: 3386263122978790821, guid: b4f4b6208f51e3247b7e0e16ebc1af2d, type: 3}
+  - {fileID: 6541608794503191813, guid: 41c4ab9f42b743643bb8ae309dab34fc, type: 3}
+  - {fileID: 7187908507485832965, guid: 11d82d8656a79c34091c75c797fca974, type: 3}
+  - {fileID: 3272165942473427107, guid: 0410e2f242b89d74caba29d1592689e8, type: 3}
+  - {fileID: 819731515257202250, guid: 222fe240465215d4eabc97638330a336, type: 3}
+  - {fileID: 1097567330401641107, guid: d6ed56673503a9948922c5f746e44e12, type: 3}
   drewno: 0
   woda: 0
   dzien: 0
@@ -551,8 +561,17 @@ MonoBehaviour:
   stamina: 0
   kamien: 0
   jedzenie: 0
+  zelazo: 0
   jedzenieText: {fileID: 970941482}
   wodaText: {fileID: 735304769}
+  pojemnoscJedzenia: 100
+  pojemnoscWody: 200
+  pojemnoscSurowcow: 300
+  ogniskoBonus: 0
+  kuchniaBonus: 0
+  tierLegowskia: 0
+  stoneAge: 0
+  ironAge: 0
 --- !u!4 &184026383
 Transform:
   m_ObjectHideFlags: 0
@@ -4300,8 +4319,17 @@ MonoBehaviour:
   stamina: 0
   kamien: 0
   jedzenie: 0
+  zelazo: 0
   jedzenieText: {fileID: 970941482}
   wodaText: {fileID: 735304769}
+  pojemnoscJedzenia: 100
+  pojemnoscWody: 200
+  pojemnoscSurowcow: 300
+  ogniskoBonus: 0
+  kuchniaBonus: 0
+  tierLegowskia: 0
+  stoneAge: 0
+  ironAge: 0
 --- !u!1 &1907920113
 GameObject:
   m_ObjectHideFlags: 0
