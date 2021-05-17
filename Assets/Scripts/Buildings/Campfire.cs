@@ -5,8 +5,17 @@ using UnityEngine;
 public class Campfire : MonoBehaviour
 {
     #region Zmienne
-    public short tierOgniska = 0;
 
+    // praca
+    //public short[] kosztDziałania = new short[3] { 1, 1, 5};
+    //public short iloscKamieniaDoPieca = 40;
+    //public short iloscZelaza = 8;
+    //public short czasPracyKuznia = 4;
+    //private short[] timeToEndBuilding = new short[2] { 1, 8};
+    //public static short pozostaleTuryDoBudowy = 0;
+
+    
+    /*
     public enum RodzajOgniska
     {
         NONE,       //0
@@ -14,21 +23,12 @@ public class Campfire : MonoBehaviour
         KUCHNIA,    //2
         PIEC        //3
     }
-
-    // praca
-    public short[] kosztDziałania = new short[3] { 1, 1, 5};
+    */
+    public short tierOgniska = 0;
+    //praca
     private bool kamieninSkonsumowany;
-    public short iloscKamieniaDoPieca = 40;
     private short iloscTurDoKoncaPracyPieca;
-    public short iloscZelaza = 8;
-    public short czasPracyKuznia = 4;
-
-
-
     // upgrade
-    private short[] timeToEndBuilding = new short[2] { 1, 8};
-    public static short pozostaleTuryDoBudowy = 0;
-
     public GameObject ogniskoPrefab;    //1
     public GameObject kuchniaPrefab;    //2
     public GameObject piecPrefab;       //3
@@ -72,25 +72,30 @@ public class Campfire : MonoBehaviour
 
     #region Praca w Ognisku
 
-    public void pracaOgniska()
+    public void PracaWOgnisko()
     {
         switch (tierOgniska)
         {
-            case (short)RodzajOgniska.OGNISKO:
-                if (gM.drewno >= kosztDziałania[tierOgniska - 1]) // zmiana tury
+            case (short)Ognisko.RodzajOgniska.OGNISKO:
+                if (gM.drewno >= (short)Ognisko.KosztDzialnia.OGNISKO) // zmiana tury
                 {
                     gM.drewno--;
-                    gM.ogniskoBonus = true;
+                    //gM.ogniskoBonus = true;
+                    Ognisko.ogniskoBonus = true;
+                }
+                else
+                {
+                    Ognisko.ogniskoBonus = false;
                 }
                 break;
          
-            case (short)RodzajOgniska.PIEC:
-                if (gM.drewno >= kosztDziałania[tierOgniska - 1])
+            case (short)Ognisko.RodzajOgniska.PIEC:
+                if (gM.drewno >= (short)Ognisko.KosztDzialnia.PIEC)
                 {
                     if (kamieninSkonsumowany == false)
                     {
-                        gM.kamien -= iloscKamieniaDoPieca;
-                        iloscTurDoKoncaPracyPieca = czasPracyKuznia;
+                        gM.kamien -= Ognisko.iloscKamieniaDoPieca;
+                        iloscTurDoKoncaPracyPieca = Ognisko.czasPracyKuznia;
                         kamieninSkonsumowany = true;
                     }
 
@@ -101,7 +106,7 @@ public class Campfire : MonoBehaviour
 
                     if (iloscTurDoKoncaPracyPieca == 0)
                     {
-                        gM.zelazo += iloscZelaza;
+                        gM.zelazo += Ognisko.iloscZelaza;
                         kamieninSkonsumowany = false;
                     }
 
@@ -122,14 +127,22 @@ public class Campfire : MonoBehaviour
     /// </param>
     public void PracaWKuchni(GameObject pracownik)
     {
-        if (tierOgniska == (short)RodzajOgniska.KUCHNIA)
+        if (tierOgniska == (short)Ognisko.RodzajOgniska.KUCHNIA)
         {
             CharacterCreator worker = pracownik.GetComponent<CharacterCreator>();
-            worker.czyPracuje = true;
-            if (gM.drewno >= kosztDziałania[tierOgniska - 1]) // zmiana tury
+            
+            if (gM.drewno >= (short)Ognisko.KosztDzialnia.KUCHNIA) // zmiana tury
             {
+                worker.czyPracuje = true;
                 gM.drewno--;
-                gM.kuchniaBonus = true;
+                //gM.kuchniaBonus = true;
+                Ognisko.kuchniaBonus = true;
+            }
+            else
+            {
+                worker.czyPracuje = false;
+                Ognisko.kuchniaBonus = false;
+
             }
         }
 
@@ -144,22 +157,22 @@ public class Campfire : MonoBehaviour
 
     public void BudowaOgniska()
     {
-        if (tierOgniska == (short)RodzajOgniska.NONE)
+        if (tierOgniska == (short)Ognisko.RodzajOgniska.NONE)
         {
-            if (pozostaleTuryDoBudowy == 0)
+            if (Ognisko.pozostaleTuryDoBudowy == 0)
             {
-                pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierOgniska] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                Ognisko.pozostaleTuryDoBudowy = (short)Ognisko.CzasBudowy.OGNISKO; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
-            else if (pozostaleTuryDoBudowy == 1)
+            else if (Ognisko.pozostaleTuryDoBudowy == 1)
             {
                 ognisko = Instantiate(ogniskoPrefab, GetBuildPostion(), transform.rotation);
-                tierOgniska = (short)RodzajOgniska.OGNISKO;
-                pozostaleTuryDoBudowy = 0;
+                tierOgniska = (short)Ognisko.RodzajOgniska.OGNISKO;
+                Ognisko.pozostaleTuryDoBudowy = 0;
             }
             else
             {
-                pozostaleTuryDoBudowy--;
+                Ognisko.pozostaleTuryDoBudowy--;
             }
         }
 
@@ -171,25 +184,25 @@ public class Campfire : MonoBehaviour
 
     public void UlepszenieDoKuchni()
     {
-        if (tierOgniska == (short)RodzajOgniska.OGNISKO)
+        if (tierOgniska == (short)Ognisko.RodzajOgniska.OGNISKO)
         {
-            if (pozostaleTuryDoBudowy == 0)
+            if (Ognisko.pozostaleTuryDoBudowy == 0)
             {
-                pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierOgniska] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                Ognisko.pozostaleTuryDoBudowy = (short)Ognisko.CzasBudowy.KUCHNIA; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
-            else if (pozostaleTuryDoBudowy == 1)
+            else if (Ognisko.pozostaleTuryDoBudowy == 1)
             {
                 Destroy(ognisko);
                 GameObject campfireTier2 = Instantiate(kuchniaPrefab, GetBuildPostion(), transform.rotation);
                 ognisko = campfireTier2;
-                tierOgniska = (short)RodzajOgniska.KUCHNIA;
-                pozostaleTuryDoBudowy = 0;
+                tierOgniska = (short)Ognisko.RodzajOgniska.KUCHNIA;
+                Ognisko.pozostaleTuryDoBudowy = 0;
             }
 
             else
             {
-                pozostaleTuryDoBudowy--;
+                Ognisko.pozostaleTuryDoBudowy--;
             }
         }
 
@@ -201,24 +214,24 @@ public class Campfire : MonoBehaviour
 
     public void UlepszenieDoPieca()
     {
-        if (tierOgniska == (short)RodzajOgniska.OGNISKO)
+        if (tierOgniska == (short)Ognisko.RodzajOgniska.OGNISKO)
         {
-            if (pozostaleTuryDoBudowy == 0)
+            if (Ognisko.pozostaleTuryDoBudowy == 0)
             {
-                pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierOgniska] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                Ognisko.pozostaleTuryDoBudowy = (short)Ognisko.CzasBudowy.PIEC; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
-            else if (pozostaleTuryDoBudowy == 1)
+            else if (Ognisko.pozostaleTuryDoBudowy == 1)
             {
                 Destroy(ognisko);
                 GameObject campfireTier3 = Instantiate(kuchniaPrefab, GetBuildPostion(), transform.rotation);
                 ognisko = campfireTier3;
-                tierOgniska = (short)RodzajOgniska.PIEC;
-                pozostaleTuryDoBudowy = 0;
+                tierOgniska = (short)Ognisko.RodzajOgniska.PIEC;
+                Ognisko.pozostaleTuryDoBudowy = 0;
             }
             else
             {
-                pozostaleTuryDoBudowy--;
+                Ognisko.pozostaleTuryDoBudowy--;
             }
         }
 

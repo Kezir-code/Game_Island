@@ -21,12 +21,15 @@ public class GameManager : Singleton<GameManager>
     public int pojemnoscWody = 200;       // default 200  
     public int pojemnoscSurowcow = 300;   // default 300
 
+    //Przenisono do BuildManager
     //bonusy z ogniska itp.
-    public bool ogniskoBonus;
-    public bool kuchniaBonus;
+    //public bool ogniskoBonus;
+    //public bool kuchniaBonus;
 
     //Legowsiko
     public int tierLegowskia;
+    public int dodatkowaStamina = 1;
+
 
     //kuznia/warsztat
     public bool stoneAge;
@@ -88,13 +91,19 @@ public class GameManager : Singleton<GameManager>
             CharacterCreator character = kalski.GetComponent<CharacterCreator>();
             if (!character.czyPracuje)
             {
-                if (tierLegowskia == 0)
+                if (tierLegowskia == 0 && Trait.ZAWODOWY_LENIUCH == character.trait)
                 {
-                    stamina++;
+
+                    stamina = (int)(dodatkowaStamina * Trait.MODYFIKATOR_LENIUCH_TRAIT);
                 }
-                else
+                else if (tierLegowskia == 0)
                 {
-                    stamina = tierLegowskia + 1;
+                    stamina += dodatkowaStamina;
+                }
+
+                else if (tierLegowskia != 0 && Trait.ZAWODOWY_LENIUCH == character.trait)
+                {
+                    stamina = (int)((tierLegowskia + 1) * Trait.MODYFIKATOR_LENIUCH_TRAIT);
                 }
             }
         }

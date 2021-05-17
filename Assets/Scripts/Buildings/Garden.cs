@@ -4,34 +4,39 @@ using UnityEngine;
 
 public class Garden : MonoBehaviour
 {
-    public short tierOgrodu;
+    
 
+    /*
     public enum RodzajOgrodu
     {
         NONE,
         OGROD,
         PLANTRACJA,
     }
-
-    public GameManager gM = GameManager.Instance;
+    */
+    
 
     //praca
-    private short[] getSurowce = new short[2] { 40, 90 };
-    private short czasPracy = 12;
+    //private short[] getSurowce = new short[2] { 40, 90 };
+    //private short czasPracy = 12;
+
+  
+    //Budowa/upgrade
+    //rivate short[,] costUpgrade = new short[2, 3] { { 20, 0, 0 }, { 80, 30, 12 } };
+    //private short[] timeToEndBuilding = new short[2] { 2, 12 };
+    //public static short pozostaleTuryDoBudowy = 0;
+    //private int minusStamina = 2;
+
+    public short tierOgrodu;
+    public GameManager gM = GameManager.Instance;
     private short czasPracyDoKonca;
     public bool dostalemJedzenie;
-
-
-    //Budowa/upgrade
-    private short[,] costUpgrade = new short[2, 3] { { 20, 0, 0 }, { 80, 30, 12 } };
-    private short[] timeToEndBuilding = new short[2] { 2, 12 };
-    public static short pozostaleTuryDoBudowy = 0;
 
     public GameObject ogrodPrefab;
     public GameObject plantacjaPrefab;
 
     public GameObject garden;
-    private int minusStamina = 2;
+    
 
     #region Metody pomocnicze
 
@@ -70,71 +75,135 @@ public class Garden : MonoBehaviour
         CharacterCreator worker = pracownik.GetComponent<CharacterCreator>();
         if (!dostalemJedzenie)
         {
-            if (gM.woda >= tierOgrodu)
+            switch (tierOgrodu)
             {
-                worker.czyPracuje = true;
-                gM.woda -= tierOgrodu;
-                gM.stamina -= minusStamina;
-                czasPracyDoKonca = czasPracy;
-                dostalemJedzenie = true;
+                case (short)Ogrod.RodzajOgrodu.OGROD:
+                    if (gM.woda >= (short)Ogrod.KosztDzialania.WODA_OGROD)
+                    {
+                        worker.czyPracuje = true;
+                        gM.woda -= (short)Ogrod.KosztDzialania.WODA_OGROD;
+                        gM.stamina -= (short)Ogrod.KosztDzialania.STAMINA_OGROD;
+                        czasPracyDoKonca = (short)Ogrod.Praca.CZAS_PRACY_OGROD;
+                        dostalemJedzenie = true;
+                    }
+                    break;
+                case (short)Ogrod.RodzajOgrodu.PLANTACJA:
+                    if (gM.woda >= (short)Ogrod.KosztDzialania.WODA_PLANTACJA)
+                    {
+                        worker.czyPracuje = true;
+                        gM.woda -= (short)Ogrod.KosztDzialania.WODA_PLANTACJA;
+                        gM.stamina -= (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA;
+                        czasPracyDoKonca = (short)Ogrod.Praca.CZAS_PRACY_PLANTACJA;
+                        dostalemJedzenie = true;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
         else
         {
-            if (gM.pora_dnia != 3 &&
-            gM.stamina >= minusStamina)
+            switch (tierOgrodu)
             {
-                czasPracyDoKonca--;
-                gM.woda -= tierOgrodu;
-                gM.stamina -= minusStamina;
-            }
+                case (short)Ogrod.RodzajOgrodu.OGROD:
+                    if (gM.pora_dnia != 3 &&
+                        gM.stamina >= (short)Ogrod.KosztDzialania.STAMINA_OGROD)
+                    {
+                        czasPracyDoKonca--;
+                        gM.woda -= (short)Ogrod.KosztDzialania.WODA_OGROD;
+                        gM.stamina -= (short)Ogrod.KosztDzialania.STAMINA_OGROD;
+                    }
 
-            else if (gM.stamina < minusStamina)
-            {
-                worker.czyPracuje = false;
-                Debug.Log("Brakuje staminy");
-            }
+                    else if (gM.stamina < (short)Ogrod.KosztDzialania.STAMINA_OGROD)
+                    {
+                        worker.czyPracuje = false;
+                        Debug.Log("Brakuje staminy");
+                    }
 
-            if (czasPracyDoKonca == 0)
-            {
-                gM.jedzenie += getSurowce[tierOgrodu - 1];
-                dostalemJedzenie = false;
-                worker.czyPracuje = false;
-                Debug.Log("Robotnik " + worker.name + " wyprodukował: " + getSurowce[tierOgrodu - 1]);
-                Debug.Log("Poziom drewna wynosi:" + gM.jedzenie);
+                    if (czasPracyDoKonca == 0)
+                    {
+                        if (worker.trait == Trait.ZAWODOWY_OGRODNIK)
+                        {
+                            gM.jedzenie += (int)((short)Ogrod.Praca.PRODUKCJA_OGROD * Trait.MODYFIKATOR_OGRODNIK_TRAIT);
+                        }
+                        else
+                        {
+                            gM.jedzenie += (short)Ogrod.Praca.PRODUKCJA_OGROD;
+                        }
+                        dostalemJedzenie = false;
+                        worker.czyPracuje = false;
+                        Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)Ogrod.Praca.PRODUKCJA_OGROD);
+                        Debug.Log("Poziom drewna wynosi:" + gM.jedzenie);
+                    }
+                    break;
+                case (short)Ogrod.RodzajOgrodu.PLANTACJA:
+                    if (gM.pora_dnia != 3 &&
+                        gM.stamina >= (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA)
+                    {
+                        czasPracyDoKonca--;
+                        gM.woda -= tierOgrodu;
+                        gM.stamina -= (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA;
+                    }
+
+                    else if (gM.stamina < (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA)
+                    {
+                        worker.czyPracuje = false;
+                        Debug.Log("Brakuje staminy");
+                    }
+
+                    if (czasPracyDoKonca == 0)
+                    {
+                        if (worker.trait == Trait.ZAWODOWY_OGRODNIK)
+                        {
+                            gM.jedzenie += (int)((short)Ogrod.Praca.PRODUKCJA_PLANTACJA * Trait.MODYFIKATOR_OGRODNIK_TRAIT);
+                        }
+                        else
+                        {
+                            gM.jedzenie += (short)Ogrod.Praca.PRODUKCJA_PLANTACJA;
+                        }
+                        
+                        dostalemJedzenie = false;
+                        worker.czyPracuje = false;
+                        Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)Ogrod.Praca.PRODUKCJA_PLANTACJA);
+                        Debug.Log("Poziom drewna wynosi:" + gM.jedzenie);
+                    }
+                    break;
+                default:
+                    break;
             }
+            
         }
-    }
+    }//PracaWOgrodzie
     #region Budowa i Upgrade
 
     public void BudowaOgrodu()
     {
-        if (tierOgrodu == (short)RodzajOgrodu.NONE)
+        if (tierOgrodu == (short)Ogrod.RodzajOgrodu.NONE)
         {
-            if (pozostaleTuryDoBudowy == 0)
+            if (Ogrod.pozostaleTuryDoBudowy == 0)
             {
-                if (gM.drewno < costUpgrade[tierOgrodu, 0])
+                if (gM.drewno < (short)Ogrod.BudowaLegowiska.DREWNO)
                 {
                     // Dla ludzi tworzących UI zrobić powiadomienie 
                     Debug.Log("Nie masz wystarczająco surowców");
                     return;
                 }
 
-                gM.drewno -= costUpgrade[tierOgrodu, 0];
-                pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierOgrodu] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                gM.drewno -= (short)Ogrod.BudowaLegowiska.DREWNO;
+                Ogrod.pozostaleTuryDoBudowy = (short)Ogrod.BudowaLegowiska.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
-            else if (pozostaleTuryDoBudowy == 1)
+            else if (Ogrod.pozostaleTuryDoBudowy == 1)
             {
                 garden = Instantiate(ogrodPrefab, GetBuildPostion(), transform.rotation);
-                tierOgrodu = (short)RodzajOgrodu.OGROD;
-                pozostaleTuryDoBudowy = 0;
+                tierOgrodu = (short)Ogrod.RodzajOgrodu.OGROD;
+                Ogrod.pozostaleTuryDoBudowy = 0;
             }
 
             else
             {
-                pozostaleTuryDoBudowy--;
+                Ogrod.pozostaleTuryDoBudowy--;
             }
         }
 
@@ -147,34 +216,34 @@ public class Garden : MonoBehaviour
 
     public void UpgradeNaPlantacje()
     {
-        if (tierOgrodu == (short)RodzajOgrodu.OGROD)
+        if (tierOgrodu == (short)Ogrod.RodzajOgrodu.OGROD)
         {
-            if (pozostaleTuryDoBudowy == 0)
+            if (Ogrod.pozostaleTuryDoBudowy == 0)
             {
-                if (gM.drewno < costUpgrade[tierOgrodu, 0] &&
-                    gM.kamien < costUpgrade[tierOgrodu, 1] &&
-                    gM.zelazo < costUpgrade[tierOgrodu, 2])
+                if (gM.drewno < (short)Ogrod.BudowaSypialni.DREWNO &&
+                    gM.kamien < (short)Ogrod.BudowaSypialni.KAMIEN &&
+                    gM.zelazo < (short)Ogrod.BudowaSypialni.ZELAZO)
                 {
                     Debug.Log("Nie masz wystarczająco surowców");
                     return;
                 }
 
-                gM.drewno -= costUpgrade[tierOgrodu, 0];
-                gM.kamien -= costUpgrade[tierOgrodu, 1];
-                gM.zelazo -= costUpgrade[tierOgrodu, 2];
-                pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierOgrodu] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                gM.drewno -= (short)Ogrod.BudowaSypialni.DREWNO;
+                gM.kamien -= (short)Ogrod.BudowaSypialni.KAMIEN;
+                gM.zelazo -= (short)Ogrod.BudowaSypialni.ZELAZO;
+                Ogrod.pozostaleTuryDoBudowy = (short)Ogrod.BudowaSypialni.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
-            else if (pozostaleTuryDoBudowy == 1)
+            else if (Ogrod.pozostaleTuryDoBudowy == 1)
             {
                 garden = Instantiate(plantacjaPrefab, GetBuildPostion(), transform.rotation);
-                tierOgrodu = (short)RodzajOgrodu.PLANTRACJA;
-                pozostaleTuryDoBudowy = 0;
+                tierOgrodu = (short)Ogrod.RodzajOgrodu.PLANTACJA;
+                Ogrod.pozostaleTuryDoBudowy = 0;
             }
 
             else
             {
-                pozostaleTuryDoBudowy--;
+                Ogrod.pozostaleTuryDoBudowy--;
             }
         }
 

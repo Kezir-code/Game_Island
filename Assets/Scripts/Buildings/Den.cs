@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class Den : MonoBehaviour
 {
+    /*
     public enum RodzajLegowiska
     {
         NONE,
         LEGOWISKO,
         SYPIALNIA
     }
-
-    public GameManager gM = GameManager.Instance;
+    */
 
     // upgrade
-    private short[,] costUpgrade = new short[2, 3] { { 40, 0, 0 }, { 60, 20, 4 } };
-    private short[] timeToEndBuilding = new short[2] { 4, 12 };
-    public static short pozostaleTuryDoBudowy = 0;
+    //private short[,] costUpgrade = new short[2, 3] { { 40, 0, 0 }, { 60, 20, 4 } };
+    //private short[] timeToEndBuilding = new short[2] { 4, 12 };
+    //public static short pozostaleTuryDoBudowy = 0;
+
+    public GameManager gM = GameManager.Instance;
 
     public GameObject den;
 
@@ -56,30 +58,30 @@ public class Den : MonoBehaviour
 
     public void LegowiskoBudowa()
     {
-        if (gM.tierLegowskia == (short)RodzajLegowiska.NONE)
+        if (gM.tierLegowskia == (short)Legowisko.RodzajLegowiska.NONE)
         {
-            if (pozostaleTuryDoBudowy == 0)
+            if (Legowisko.pozostaleTuryDoBudowy == 0)
             {
-                if (gM.drewno < costUpgrade[gM.tierLegowskia, 0])
+                if (gM.drewno < (short)Legowisko.BudowaLegowiska.DREWNO)
                 {
                     // Dla ludzi tworzących UI zrobić powiadomienie 
                     Debug.Log("Nie masz wystarczająco surowców");
                     return;
                 }
 
-                gM.drewno -= costUpgrade[gM.tierLegowskia, 0];
-                pozostaleTuryDoBudowy = (short)(timeToEndBuilding[gM.tierLegowskia] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                gM.drewno -= (short)Legowisko.BudowaLegowiska.DREWNO;
+                Legowisko.pozostaleTuryDoBudowy = (short)Legowisko.BudowaLegowiska.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
-            else if (pozostaleTuryDoBudowy == 1)
+            else if (Legowisko.pozostaleTuryDoBudowy == 1)
             {
                 den = Instantiate(legowiskoPrefab, GetBuildPostion(), transform.rotation);
-                gM.tierLegowskia = (short)RodzajLegowiska.LEGOWISKO;
-                pozostaleTuryDoBudowy = 0;
+                gM.tierLegowskia = (short)Legowisko.RodzajLegowiska.LEGOWISKO;
+                Legowisko.pozostaleTuryDoBudowy = 0;
             }
             else
             {
-                pozostaleTuryDoBudowy--;
+                Legowisko.pozostaleTuryDoBudowy--;
             }
         }
 
@@ -92,36 +94,36 @@ public class Den : MonoBehaviour
 
     public void SypialniaUpgade()
     {
-        if (gM.tierLegowskia == (short)RodzajLegowiska.LEGOWISKO)
+        if (gM.tierLegowskia == (short)Legowisko.RodzajLegowiska.LEGOWISKO)
         {
-            if (pozostaleTuryDoBudowy == 0)
+            if (Legowisko.pozostaleTuryDoBudowy == 0)
             {
-                if (gM.drewno < costUpgrade[gM.tierLegowskia, 0] &&
-                    gM.kamien < costUpgrade[gM.tierLegowskia, 1] &&
-                    gM.zelazo < costUpgrade[gM.tierLegowskia, 2])
+                if (gM.drewno < (short)Legowisko.BudowaSypialni.DREWNO &&
+                    gM.kamien < (short)Legowisko.BudowaSypialni.KAMIEN &&
+                    gM.zelazo < (short)Legowisko.BudowaSypialni.ZELAZO)
                 {
                     Debug.Log("Nie masz wystarczająco surowców");
                     return;
                 }
 
-                gM.drewno -= costUpgrade[gM.tierLegowskia, 0];
-                gM.kamien -= costUpgrade[gM.tierLegowskia, 1];
-                gM.zelazo -= costUpgrade[gM.tierLegowskia, 2];
-                pozostaleTuryDoBudowy = (short)(timeToEndBuilding[gM.tierLegowskia] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
-            }
-
-            else if (pozostaleTuryDoBudowy == 1)
+                gM.drewno -= (short)Legowisko.BudowaSypialni.DREWNO;
+                gM.kamien -= (short)Legowisko.BudowaSypialni.KAMIEN;
+                gM.zelazo -= (short)Legowisko.BudowaSypialni.ZELAZO;
+                Legowisko.pozostaleTuryDoBudowy = (short)Legowisko.BudowaSypialni.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+            }                                 
+                                              
+            else if (Legowisko.pozostaleTuryDoBudowy == 1)
             {
                 Destroy(den);
                 GameObject sypialnia = Instantiate(sypialniaPrefab, GetBuildPostion(), transform.rotation);
                 den = sypialnia;
                 den = Instantiate(legowiskoPrefab, GetBuildPostion(), transform.rotation);
-                gM.tierLegowskia = (short)RodzajLegowiska.SYPIALNIA;
-                pozostaleTuryDoBudowy = 0;
+                gM.tierLegowskia = (short)Legowisko.RodzajLegowiska.SYPIALNIA;
+                Legowisko.pozostaleTuryDoBudowy = 0;
             }
             else
             {
-                pozostaleTuryDoBudowy--;
+                Legowisko.pozostaleTuryDoBudowy--;
             }
         }
 

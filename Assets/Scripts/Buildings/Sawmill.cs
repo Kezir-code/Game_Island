@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // to do
-// Sprawdz czy tier tartaku jest taki jaki potrzeba
-// Zrobić budowanie
+// Zmodyfikować kod
+// 
 
 
 	public class Sawmill : MonoBehaviour 
 {
 	//	- Wymaga pracownika
 	//	- Generuje 5/20/35 (na dzień 4 tury)
-
-	//praca
-	private short tierTartaku = 0;
-	private short[] getSurowce = new short[3] { 5, 20, 35};
-	private short czasPracy = 3; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
 	//	-Wymagania:
 	//	Tier 1: (czas budowy 4 tur)
 	//		-Drewno 5
@@ -28,12 +23,20 @@ using UnityEngine;
 	//		-Drewno 70
 	//		-Żelazo 18
 
-	//upgrade
-	private short[,] costUpgrade = new short[3, 3] { { 5, 0, 0 }, { 35, 20, 0 }, { 70, 50, 18 } };
-	private short[] timeToEndBuilding = new short[3] { 4, 8, 12 };
-	public static short pozostaleTuryDoBudowy = 0;
-	public short minusStamina = 4;
+	//praca
 
+	//private short[] getSurowce = new short[3] { 5, 20, 35};
+	//private short czasPracy = 3; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
+
+
+	//upgrade
+
+	//private short[,] costUpgrade = new short[3, 3] { { 5, 0, 0 }, { 35, 20, 0 }, { 70, 50, 18 } };
+	//private short[] timeToEndBuilding = new short[3] { 4, 8, 12 };
+	//public static short pozostaleTuryDoBudowy = 0;
+
+	private short tierTartaku = 0;
+	
 	public GameObject prefabSawmillTier1;
 	public GameObject prefabSawmillTier2;
 	public GameObject prefabSawmillTier3;
@@ -80,20 +83,21 @@ using UnityEngine;
         foreach (CharacterCreator worker in characterCreators)
         {
 			//int i = characterCreators.Count; // 0,1,2 czy 1,2,3?
-			if (worker.turyDoKoncaPracy == 0)
+			if (worker.czyPracuje == false)
 			{
-				worker.turyDoKoncaPracy = czasPracy; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
+				worker.turyDoKoncaPracy = Tartak.czasPracy; 
 				worker.czyPracuje = true;
 			}
-			// Czy bedzię pętla?	
+			
 			// 3 - to noc, a w nocy nie pracujemy 		
-			if (gM.pora_dnia != 3 &&			 
-				gM.stamina >= minusStamina)
+			else if (gM.pora_dnia != 3 &&			 
+				gM.stamina >= Tartak.kosztStaminy)
 			{
 				worker.turyDoKoncaPracy--;					
-				gM.stamina -= minusStamina;			
+				gM.stamina -= Tartak.kosztStaminy;			
 			}
-            else if (gM.stamina < minusStamina) 
+
+            else if (gM.stamina < Tartak.kosztStaminy) 
             {
 				worker.czyPracuje = false;
 				Debug.Log("Brakuje staminy");
@@ -101,55 +105,135 @@ using UnityEngine;
 
 			if (worker.turyDoKoncaPracy == 1 )
 			{
-				gM.Zmiana_drewno(getSurowce[tierTartaku - 1]);
-				worker.turyDoKoncaPracy = 0;
-				worker.czyPracuje = false;
-				Debug.Log("Robotnik " + worker.name + " wyprodukował: " + getSurowce[tierTartaku - 1]);
-				Debug.Log("Poziom drewna wynosi:" + gM.drewno);
+                switch (tierTartaku)
+                {
+					case (short)Tartak.TierTartaku.TIER_1:
+						worker.turyDoKoncaPracy = 0;
+						worker.czyPracuje = false;
+                        if (worker.trait == Trait.ZAWODOWY_DRWAL)
+                        {
+                            gM.drewno += (int)((short)Tartak.DostanSurowce.DREWNO_TIER_1* Trait.MODYFIKATOR_DRWAL_TRAIT);
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + 
+								(int)((short)Tartak.DostanSurowce.DREWNO_TIER_1 * Trait.MODYFIKATOR_DRWAL_TRAIT));
+
+							Debug.Log("Poziom drewna wynosi:" + gM.drewno);
+						}
+
+                        else
+                        {
+							gM.drewno += (short)Tartak.DostanSurowce.DREWNO_TIER_1;
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " +
+								(short)Tartak.DostanSurowce.DREWNO_TIER_1);
+
+							Debug.Log("Poziom drewna wynosi:" + gM.drewno);
+						}
+						break;
+
+					case (short)Tartak.TierTartaku.TIER_2:
+						gM.drewno += (short)Tartak.DostanSurowce.DREWNO_TIER_2;
+						worker.turyDoKoncaPracy = 0;
+						worker.czyPracuje = false;
+
+						if (worker.trait == Trait.ZAWODOWY_DRWAL)
+						{
+							gM.drewno += (int)((short)Tartak.DostanSurowce.DREWNO_TIER_2 * Trait.MODYFIKATOR_DRWAL_TRAIT);
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " +
+								(int)((short)Tartak.DostanSurowce.DREWNO_TIER_2 * Trait.MODYFIKATOR_DRWAL_TRAIT));
+
+							Debug.Log("Poziom drewna wynosi:" + gM.drewno);
+						}
+
+						else
+						{
+							gM.drewno += (short)Tartak.DostanSurowce.DREWNO_TIER_2;
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " +
+								(short)Tartak.DostanSurowce.DREWNO_TIER_2);
+
+							Debug.Log("Poziom drewna wynosi:" + gM.drewno);
+						}
+
+						Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)Tartak.DostanSurowce.DREWNO_TIER_2);
+						Debug.Log("Poziom drewna wynosi:" + gM.drewno);
+						break;
+
+					case (short)Tartak.TierTartaku.TIER_3:
+						gM.drewno += (short)Tartak.DostanSurowce.DREWNO_TIER_3;
+						worker.turyDoKoncaPracy = 0;
+						worker.czyPracuje = false;
+
+						if (worker.trait == Trait.ZAWODOWY_DRWAL)
+						{
+							gM.drewno += (int)((short)Tartak.DostanSurowce.DREWNO_TIER_3 * Trait.MODYFIKATOR_DRWAL_TRAIT);
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " +
+								(int)((short)Tartak.DostanSurowce.DREWNO_TIER_3 * Trait.MODYFIKATOR_DRWAL_TRAIT));
+
+							Debug.Log("Poziom drewna wynosi:" + gM.drewno);
+						}
+
+						else
+						{
+							gM.drewno += (short)Tartak.DostanSurowce.DREWNO_TIER_3;
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " +
+								(short)Tartak.DostanSurowce.DREWNO_TIER_3);
+
+							Debug.Log("Poziom drewna wynosi:" + gM.drewno);
+						}
+
+						Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)Tartak.DostanSurowce.DREWNO_TIER_3);
+						Debug.Log("Poziom drewna wynosi:" + gM.drewno);
+						break;
+                }
+                
 			}
 
 		}
-		
-	}
 
-    #endregion
+	}//PracaWTartaku
+
+	#endregion
 
 
-    #region Upgrade
+	#region Upgrade
 
-    // Zapytaj scenarzystów czy do ulepszenia potrzeba pracownika
-    public void TartakTierUpgrade()
+	// Zapytaj scenarzystów czy do ulepszenia potrzeba pracownika
+	public void TartakTierUpgrade()
 	{
 		switch (tierTartaku)
 		{
 			// budowa tartaku
 			//	Tier 1: (czas budowy 4 tur)
 			//		-Drewno 10
-			case 0:
-                if (pozostaleTuryDoBudowy == 0)
+			case (short)Tartak.TierTartaku.NONE:
+                if (Tartak.pozostaleTuryDoBudowy == 0)
                 {
-					if (gM.drewno < costUpgrade[tierTartaku, 0])
+					if (gM.drewno < (short)Tartak.BudowaTartaku.DREWNO)
 					{
 						// Dla ludzi tworzących UI zrobić powiadomienie 
 						Debug.Log("Nie masz wystarczająco surowców");
 						return;
 					}
 
-					gM.drewno -= costUpgrade[tierTartaku, 0];
-					pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierTartaku] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+					gM.drewno -= (short)Tartak.BudowaTartaku.DREWNO;
+					Tartak.pozostaleTuryDoBudowy = (short)(Tartak.BudowaTartaku.CZAS_BUDOWY); // #4
 				}
 
-				else if (pozostaleTuryDoBudowy == 1)
+				else if (Tartak.pozostaleTuryDoBudowy == 1)
 				{
 					sawmill = (GameObject)Instantiate(prefabSawmillTier1, GetBuildPostion(), transform.rotation);
-					tierTartaku++;
-					pozostaleTuryDoBudowy = 0;
+					tierTartaku = (short)Tartak.TierTartaku.TIER_1;
+					Tartak.pozostaleTuryDoBudowy = 0;
 				}
 
 				else
 				{
-					Debug.Log($"Pozostały czas do wybudowania tartaku to: {pozostaleTuryDoBudowy - 1}"); // # 4
-					pozostaleTuryDoBudowy--; // # 4
+					Tartak.pozostaleTuryDoBudowy--; // # 3
+					Debug.Log($"Pozostały czas do wybudowania tartaku to: {Tartak.pozostaleTuryDoBudowy}"); // # 3
 				}
 
 				break; // case 0
@@ -158,78 +242,78 @@ using UnityEngine;
 			//	Tier 2: (czas budowy 8 tur)
 			//		-Kamień 20
 			//		-Drewno 35
-			case 1:
-                if (pozostaleTuryDoBudowy == 0)
+			case (short)Tartak.TierTartaku.TIER_1:
+                if (Tartak.pozostaleTuryDoBudowy == 0)
                 {
-					if (gM.drewno < costUpgrade[1, 0] &&
-						gM.kamien < costUpgrade[1, 1])
+					if (gM.drewno < (short)Tartak.UpgradeTartakTier2.DREWNO &&
+						gM.kamien < (short)Tartak.UpgradeTartakTier2.KAMIEN)
 					{
 						Debug.Log("Nie masz wystarczająco surowców");
 						return;
 					}
-					gM.drewno -= costUpgrade[1, 0];
-					gM.kamien -= costUpgrade[1, 1];
-					pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierTartaku] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 9
+					gM.drewno -= (short)Tartak.UpgradeTartakTier2.DREWNO;
+					gM.kamien -= (short)Tartak.UpgradeTartakTier2.KAMIEN;
+					Tartak.pozostaleTuryDoBudowy = (short)Tartak.UpgradeTartakTier2.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 9
 				}			
 
-                else if (pozostaleTuryDoBudowy == 1)
+                else if (Tartak.pozostaleTuryDoBudowy == 1)
                 {
 					Destroy(sawmill);
 					GameObject sawmillTier2 = (GameObject)Instantiate(prefabSawmillTier2, GetBuildPostion(), transform.rotation);
 					sawmill = sawmillTier2;
 					tierTartaku++;
-					pozostaleTuryDoBudowy = 0;
+					Tartak.pozostaleTuryDoBudowy = 0;
 				}
 
                 else
                 {
-					Debug.Log($"Pozostały czas do ulepszenia tartaku to: {pozostaleTuryDoBudowy - 1}"); // #8
-					pozostaleTuryDoBudowy--; // # 8
+					Tartak.pozostaleTuryDoBudowy--; // # 7
+					Debug.Log($"Pozostały czas do ulepszenia tartaku to: {Tartak.pozostaleTuryDoBudowy}"); // #7
+					
                 }
 
 				break; // case 1 
 
-			//	Tier 3: (czas bydowy 12 tur)
+			//	Tier 3: (czas budowy 12 tur)
 			//		-Kamień 50
 			//		-Drewno 70
 			//		-Żelazo 18
-			case 2:
-                if (pozostaleTuryDoBudowy == 0)
+			case (short)Tartak.TierTartaku.TIER_2:
+                if (Tartak.pozostaleTuryDoBudowy == 0)
                 {
-					if (gM.drewno < costUpgrade[2, 0] &&
-						gM.kamien < costUpgrade[2, 1] &&
-						gM.zelazo < costUpgrade[2, 2])
+					if (gM.drewno < (short)Tartak.UpgradeTartakTier3.DREWNO &&
+						gM.kamien < (short)Tartak.UpgradeTartakTier3.KAMIEN &&
+						gM.zelazo < (short)Tartak.UpgradeTartakTier3.ZELAZO)
 					{
 						Debug.Log("Nie masz wystarczająco surowców");
 						return;
 					}
 
-					gM.drewno -= costUpgrade[2, 0];
-					gM.kamien -= costUpgrade[2, 1];
-					gM.zelazo -= costUpgrade[2, 2];
-					pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierTartaku] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 13
+					gM.drewno -= (short)Tartak.UpgradeTartakTier3.DREWNO;
+					gM.kamien -= (short)Tartak.UpgradeTartakTier3.KAMIEN;
+					gM.zelazo -= (short)Tartak.UpgradeTartakTier3.ZELAZO;
+					Tartak.pozostaleTuryDoBudowy = (short)Tartak.UpgradeTartakTier3.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 13
 
 				}
 
-				else if (pozostaleTuryDoBudowy == 1)
+				else if (Tartak.pozostaleTuryDoBudowy == 1)
 				{
 					Destroy(sawmill);
 					GameObject sawmillTier3 = (GameObject)Instantiate(prefabSawmillTier2, GetBuildPostion(), transform.rotation);
 					sawmill = sawmillTier3;
 					tierTartaku++;
-					pozostaleTuryDoBudowy = 0;
+					Tartak.pozostaleTuryDoBudowy = 0;
 				}
 
 				else
 				{
-					Debug.Log($"Pozostały czas do ulepszenia tartaku to: {pozostaleTuryDoBudowy - 1}"); // #12
-					pozostaleTuryDoBudowy--; // # 12
+					Debug.Log($"Pozostały czas do ulepszenia tartaku to: {Tartak.pozostaleTuryDoBudowy - 1}"); // #12
+					Tartak.pozostaleTuryDoBudowy--; // # 12
 				}
-
-
 
 				break;
 			default:
+				Debug.LogWarning("Nie możesz już ulepszyć tartaku!!");
 				break;
 		}
 

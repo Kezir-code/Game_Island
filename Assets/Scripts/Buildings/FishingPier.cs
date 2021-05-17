@@ -10,9 +10,9 @@ public class FishingPier : MonoBehaviour
 
 	//praca
 	public static short tierPomostRybacki = 0;
-	private short[] getSurowce = new short[2] { 40, 90};
+	//private short[] getSurowce = new short[2] { 40, 90};
 	//public short minusStamina = 1;
-	private short czasPracy = 5; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
+	//private short czasPracy = 5; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
 
 
 	//Tier 1 (2 tur)
@@ -24,11 +24,11 @@ public class FishingPier : MonoBehaviour
 	//-20 jedzenia
 
 	//upgrade
-	private short timeToEndBuilding =  12;
-	private short[,] costUpgrade = new short[2, 3] { { 30, 0, 0 }, { 40, 20, 6} };
-	public static short pozostaleTuryDoBudowy = 0;
+	//private short timeToEndBuilding =  12;
+	//private short[,] costUpgrade = new short[2, 3] { { 30, 0, 0 }, { 40, 20, 6} };
+	//public static short pozostaleTuryDoBudowy = 0;
 
-	public float mnoznikZKuchni = 1.2f; // wstawić to do gamemanger'a?
+	//public float mnoznikZKuchni = 1.2f; // wstawić to do gamemanger'a?
 
 
 	public GameObject prefabFishingPierTier1;
@@ -77,7 +77,7 @@ public class FishingPier : MonoBehaviour
 			//int i = characterCreators.Count; // 0,1,2 czy 1,2,3?
 			if (worker.turyDoKoncaPracy == 0)
 			{
-				worker.turyDoKoncaPracy = czasPracy; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
+				worker.turyDoKoncaPracy = PomostRybacki.czasPracy; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
 				worker.czyPracuje = true;
 			}
 			// Czy bedzię pętla?	
@@ -89,20 +89,71 @@ public class FishingPier : MonoBehaviour
 
 			if (worker.turyDoKoncaPracy == 1)
 			{
-				if (gM.kuchniaBonus == true)
-				{
-					gM.jedzenie = (int)(getSurowce[tierPomostRybacki - 1] * mnoznikZKuchni);
-				}
-                else
+                switch (tierPomostRybacki)
                 {
-					gM.jedzenie = getSurowce[tierPomostRybacki - 1];
-				}
+					case (short)PomostRybacki.TierPomostRybacki.POMOST_RYBACKI:
+						if (Ognisko.kuchniaBonus == true && worker.trait == Trait.ZAWODOWY_KUCHARZ)
+						{
+							gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI *
+								PomostRybacki.mnoznikZKuchni * Trait.MODYFIKATOR_KUCHARZ_TRAIT);
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + 
+								(short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI * PomostRybacki.mnoznikZKuchni * Trait.MODYFIKATOR_KUCHARZ_TRAIT);
+							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+						}
+
+                        else if (Ognisko.kuchniaBonus == true)
+                        {
+							gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI * PomostRybacki.mnoznikZKuchni);
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + 
+								(short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI * PomostRybacki.mnoznikZKuchni);
+							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+						}
+
+						else
+						{
+							gM.jedzenie = (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI;
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
+							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+						}
+
+						break;
+
+					case (short)PomostRybacki.TierPomostRybacki.CHATA_RYBACKA:
+						if (Ognisko.kuchniaBonus == true && worker.trait == Trait.ZAWODOWY_KUCHARZ)
+						{
+							gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_CHATA_RYBACKA * 
+								PomostRybacki.mnoznikZKuchni * Trait.MODYFIKATOR_KUCHARZ_TRAIT);
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
+							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+						}
+
+						else if (Ognisko.kuchniaBonus == true)
+						{
+							gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_CHATA_RYBACKA * PomostRybacki.mnoznikZKuchni);
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
+							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+						}
+
+						else
+						{
+							gM.jedzenie = (short)PomostRybacki.DostanSurowce.JEDZENIE_CHATA_RYBACKA;
+
+							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
+							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+						}
+
+						break;
+                    default:
+                        break;
+                }
 				//gM.stamina -= minusStamina;
 				worker.turyDoKoncaPracy = 0;
 				worker.czyPracuje = false;
-				
-				Debug.Log("Robotnik " + worker.name + " wyprodukował: " + getSurowce[tierPomostRybacki - 1]);
-				Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
 			}
 
 		}
@@ -122,52 +173,52 @@ public class FishingPier : MonoBehaviour
 			//	Tier 1: (czas budowy 4 tur)
 			//		-Drewno 10
 			case 0:
-                if (pozostaleTuryDoBudowy == 0)
+                if (PomostRybacki.pozostaleTuryDoBudowy == 0)
                 {
-					if (gM.drewno < costUpgrade[tierPomostRybacki, 0])
+					if (gM.drewno < (short)PomostRybacki.BudowaPomostRybacki.DREWNO)
 					{
 						// Dla ludzi tworzących UI zrobić powiadomienie 
 						Debug.Log("Nie masz wystarczająco surowców");
 						return;
 					}
 
-					gM.drewno -= costUpgrade[tierPomostRybacki, 0];
-					pozostaleTuryDoBudowy = (short)(timeToEndBuilding + 1);
+					gM.drewno -= (short)PomostRybacki.BudowaPomostRybacki.DREWNO;
+					PomostRybacki.pozostaleTuryDoBudowy = (short)PomostRybacki.BudowaPomostRybacki.CZAS_BUDOWY;
 				}
 
-                else if (pozostaleTuryDoBudowy == 1)
+                else if (PomostRybacki.pozostaleTuryDoBudowy == 1)
                 {
 					fishingPier = (GameObject)Instantiate(prefabFishingPierTier1, GetBuildPostion(), transform.rotation);
 					tierPomostRybacki++;
-					pozostaleTuryDoBudowy = 0;
+					PomostRybacki.pozostaleTuryDoBudowy = 0;
 				}
 
 				else
 				{
-					Debug.Log($"Pozostały czas do wybudowania pomostu rybackiego to: {pozostaleTuryDoBudowy - 1}"); // #2
-					pozostaleTuryDoBudowy--; // # 2
+					Debug.Log($"Pozostały czas do wybudowania pomostu rybackiego to: {PomostRybacki.pozostaleTuryDoBudowy}"); // #2
+					PomostRybacki.pozostaleTuryDoBudowy--; // # 2
 				}
 
 				break; //case 0
 
 			case 1:
-                if (pozostaleTuryDoBudowy == 0)
+                if (PomostRybacki.pozostaleTuryDoBudowy == 0)
                 {
-					if (gM.drewno < costUpgrade[tierPomostRybacki, 0] &&
-						gM.kamien < costUpgrade[tierPomostRybacki, 1] &&
-						gM.zelazo < costUpgrade[tierPomostRybacki, 2])
+					if (gM.drewno < (short)PomostRybacki.UpgradeNaChataRybacka.DREWNO &&
+						gM.kamien < (short)PomostRybacki.UpgradeNaChataRybacka.KAMIEN &&
+						gM.zelazo < (short)PomostRybacki.UpgradeNaChataRybacka.ZELAZO)
 					{
 						Debug.Log("Nie masz wystarczająco surowców");
 						return;
 					}
 
-					gM.drewno -= costUpgrade[tierPomostRybacki, 0];
-					gM.kamien -= costUpgrade[tierPomostRybacki, 1];
-					gM.zelazo -= costUpgrade[tierPomostRybacki, 2];
-					pozostaleTuryDoBudowy = (short)(timeToEndBuilding + 1);	 // # 13
+					gM.drewno -= (short)PomostRybacki.UpgradeNaChataRybacka.DREWNO;
+					gM.kamien -= (short)PomostRybacki.UpgradeNaChataRybacka.KAMIEN;
+					gM.zelazo -= (short)PomostRybacki.UpgradeNaChataRybacka.ZELAZO;
+					PomostRybacki.pozostaleTuryDoBudowy = (short)PomostRybacki.UpgradeNaChataRybacka.CZAS_BUDOWY;	 // # 12
 				}
 
-				else if (pozostaleTuryDoBudowy == 1)
+				else if (PomostRybacki.pozostaleTuryDoBudowy == 1)
 				{
 					Destroy(fishingPier);
 					GameObject FishingPierTier2 = (GameObject)Instantiate(prefabFishingPierTier2, GetBuildPostion(), transform.rotation);
@@ -177,8 +228,8 @@ public class FishingPier : MonoBehaviour
 
 				else
 				{
-					Debug.Log($"Pozostały czas do ulepszenia pomostu rybackiego to: {pozostaleTuryDoBudowy - 1}"); // #12
-					pozostaleTuryDoBudowy--; // # 12
+					Debug.Log($"Pozostały czas do ulepszenia pomostu rybackiego to: {PomostRybacki.pozostaleTuryDoBudowy}"); // #12
+					PomostRybacki.pozostaleTuryDoBudowy--; // # 12
 				}
 
 				break; // case 1

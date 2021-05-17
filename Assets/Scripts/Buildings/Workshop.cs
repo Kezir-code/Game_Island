@@ -6,16 +6,8 @@ public class Workshop : MonoBehaviour
 {
     public short tierWarsztatu;
 
-    public enum RodzajWarsztatu
-    {
-        NONE,
-        WARSZTAT,
-        KUZNIA
-    }
-
     //Budowa/upgrade
     private int pozostaleTuryDoBudowy;
-    private short[] timeToEndBuilding = new short[2] { 12, 20 };
 
     public GameObject warsztatPrefab;
     public GameObject kuzniaPrefab;
@@ -102,17 +94,17 @@ public class Workshop : MonoBehaviour
 
     public void BudowaWarsztatu()
     {
-        if (tierWarsztatu == (short)RodzajWarsztatu.NONE)
+        if (tierWarsztatu == (short)Warsztat.RodzajWarsztatu.NONE)
         {
             if (pozostaleTuryDoBudowy == 0)
             {
-                pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierWarsztatu] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                pozostaleTuryDoBudowy = (short)Warsztat.CzasBudowy.WARSZTAT; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
             else if (pozostaleTuryDoBudowy == 1)
             {
                 workshop = Instantiate(warsztatPrefab, GetBuildPostion(), transform.rotation);
-                tierWarsztatu = (short)RodzajWarsztatu.WARSZTAT;
+                tierWarsztatu = (short)Warsztat.RodzajWarsztatu.WARSZTAT;
                 pozostaleTuryDoBudowy = 0;
                 gM.stoneAge = true;
 
@@ -131,11 +123,11 @@ public class Workshop : MonoBehaviour
 
     public void UlepszenieDoKuzni()
     {
-        if (tierWarsztatu == (short)RodzajWarsztatu.KUZNIA)
+        if (tierWarsztatu == (short)Warsztat.RodzajWarsztatu.KUZNIA)
         {
             if (pozostaleTuryDoBudowy == 0)
             {
-                pozostaleTuryDoBudowy = (short)(timeToEndBuilding[tierWarsztatu] + 1); // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                pozostaleTuryDoBudowy = (short)(short)Warsztat.CzasBudowy.KUZNIA; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
             else if (pozostaleTuryDoBudowy == 1)
@@ -143,7 +135,7 @@ public class Workshop : MonoBehaviour
                 Destroy(workshop);
                 GameObject kuznia = Instantiate(kuzniaPrefab, GetBuildPostion(), transform.rotation);
                 workshop = kuznia;
-                tierWarsztatu = (short)RodzajWarsztatu.KUZNIA;
+                tierWarsztatu = (short)Warsztat.RodzajWarsztatu.KUZNIA;
                 pozostaleTuryDoBudowy = 0;
                 gM.ironAge = true;
 
