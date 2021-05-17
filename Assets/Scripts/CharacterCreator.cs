@@ -8,4 +8,6 @@ public class CharacterCreator : MonoBehaviour
     public string surname;
     public bool isAlive;
     public int lvl;
+    [HideInInspector] public string trait;
+    
 }

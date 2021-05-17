@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : Singleton<GameManager>
 {
     private GameObject activeScreen;
     private Camera camera;
     public List<GameObject> people;
+    //public List<GameObject> people = Resources.LoadAll<GameObject>("Characters").ToList();
     public int drewno;
     public int woda;
     public int dzien;
@@ -17,12 +20,12 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         camera = CameraMovement.Instance.GetComponent<Camera>();
+        GetAttributes();
     }
-
-    // Update is called once per frame
+   // Update is called once per frame
     void Update()
     {
-        
+        people = Resources.LoadAll<GameObject>("Characters").ToList();
     }
 
     public void Zmiana_Pory_Dnia()
@@ -59,5 +62,19 @@ public class GameManager : Singleton<GameManager>
     {
         dzien++;
     }
+    public void GetAttributes()
+    {
+        for (int i = 0; i < people.Count; i++)
+        {
+            people[i].GetComponent<CharacterCreator>();
+            Debug.Log(name);
+        }
+        
+    }
+    public void PlaceCharacter(GameObject character, Vector3 pocision)
+    {
+        
+    }
+    
 
 }
