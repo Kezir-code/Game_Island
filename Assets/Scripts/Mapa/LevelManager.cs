@@ -56,9 +56,20 @@ public class LevelManager : Singleton<LevelManager>
 
     private void PlaceTile(string tileType, int x, int y, Vector3 worldStart)
     {
-        int tileIndex = int.Parse(tileType);
+        int tileIndex;
+        int value;
+        if(int.TryParse(tileType, out value) == true)
+        {
+            
+            tileIndex = value;
+        }
+        else
+        {
+            tileIndex = 0;
+        }
 
-        if(tileIndex != 0)
+        //Debug.Log(tileIndex);
+        if (tileIndex != 0)
         {
             // 9 - starting point
             if(tileIndex == 9)
