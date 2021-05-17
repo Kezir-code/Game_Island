@@ -521,7 +521,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Pawel
   surname: Finke
-  isAlive: 0
+  isAlive: 1
   lvl: 0
 --- !u!1 &3202415099941405937
 GameObject:
