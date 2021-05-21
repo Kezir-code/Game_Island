@@ -183,15 +183,18 @@ public class Garden : MonoBehaviour
         {
             if (Ogrod.pozostaleTuryDoBudowy == 0)
             {
-                if (gM.drewno < (short)Ogrod.BudowaLegowiska.DREWNO)
+                if (gM.drewno < (short)Ogrod.BudowaOgrodu.DREWNO &&
+                    gM.kamien < (short)Ogrod.BudowaOgrodu.KAMIEN &&
+                    gM.zelazo < (short)Ogrod.BudowaOgrodu.ZELAZO)
                 {
                     // Dla ludzi tworzących UI zrobić powiadomienie 
                     Debug.Log("Nie masz wystarczająco surowców");
                     return;
                 }
-
-                gM.drewno -= (short)Ogrod.BudowaLegowiska.DREWNO;
-                Ogrod.pozostaleTuryDoBudowy = (short)Ogrod.BudowaLegowiska.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                gM.drewno -= (short)Ogrod.BudowaOgrodu.DREWNO;
+                gM.kamien -= (short)Ogrod.BudowaOgrodu.KAMIEN;
+                gM.zelazo -= (short)Ogrod.BudowaOgrodu.ZELAZO;
+                Ogrod.pozostaleTuryDoBudowy = (short)Ogrod.BudowaOgrodu.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
             else if (Ogrod.pozostaleTuryDoBudowy == 1)
@@ -220,23 +223,25 @@ public class Garden : MonoBehaviour
         {
             if (Ogrod.pozostaleTuryDoBudowy == 0)
             {
-                if (gM.drewno < (short)Ogrod.BudowaSypialni.DREWNO &&
-                    gM.kamien < (short)Ogrod.BudowaSypialni.KAMIEN &&
-                    gM.zelazo < (short)Ogrod.BudowaSypialni.ZELAZO)
+                if (gM.drewno < (short)Ogrod.BudowaPlantacji.DREWNO &&
+                    gM.kamien < (short)Ogrod.BudowaPlantacji.KAMIEN &&
+                    gM.zelazo < (short)Ogrod.BudowaPlantacji.ZELAZO)
                 {
                     Debug.Log("Nie masz wystarczająco surowców");
                     return;
                 }
 
-                gM.drewno -= (short)Ogrod.BudowaSypialni.DREWNO;
-                gM.kamien -= (short)Ogrod.BudowaSypialni.KAMIEN;
-                gM.zelazo -= (short)Ogrod.BudowaSypialni.ZELAZO;
-                Ogrod.pozostaleTuryDoBudowy = (short)Ogrod.BudowaSypialni.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                gM.drewno -= (short)Ogrod.BudowaPlantacji.DREWNO;
+                gM.kamien -= (short)Ogrod.BudowaPlantacji.KAMIEN;
+                gM.zelazo -= (short)Ogrod.BudowaPlantacji.ZELAZO;
+                Ogrod.pozostaleTuryDoBudowy = (short)Ogrod.BudowaPlantacji.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
             else if (Ogrod.pozostaleTuryDoBudowy == 1)
             {
-                garden = Instantiate(plantacjaPrefab, GetBuildPostion(), transform.rotation);
+                Destroy(garden);
+                GameObject plantacja = Instantiate(plantacjaPrefab, GetBuildPostion(), transform.rotation);
+                garden = plantacja;
                 tierOgrodu = (short)Ogrod.RodzajOgrodu.PLANTACJA;
                 Ogrod.pozostaleTuryDoBudowy = 0;
             }
@@ -253,6 +258,34 @@ public class Garden : MonoBehaviour
         }
 
     }//UpgradeNaPlantacje
+
+    public void SprzedajBudynek()
+    {
+        switch (tierOgrodu)
+        {
+            case (short)Ogrod.RodzajOgrodu.OGROD:
+
+                Destroy(garden);
+                gM.drewno -= (short)Ogrod.SprzedazOgrodu.DREWNO;
+                gM.kamien -= (short)Ogrod.SprzedazOgrodu.KAMIEN;
+                gM.zelazo -= (short)Ogrod.SprzedazOgrodu.ZELAZO;
+
+                break;
+
+            case (short)Ogrod.RodzajOgrodu.PLANTACJA:
+
+                Destroy(garden);
+                gM.drewno -= (short)Ogrod.SprzedazPlantacji.DREWNO;
+                gM.kamien -= (short)Ogrod.SprzedazPlantacji.KAMIEN;
+                gM.zelazo -= (short)Ogrod.SprzedazPlantacji.ZELAZO;
+
+                break;
+            default:
+                Debug.LogWarning("Budynek już nie istnieje lub tier się nie zgadza");
+                break;
+
+        }
+    }//SprzedajBudynek
 
     #endregion
 

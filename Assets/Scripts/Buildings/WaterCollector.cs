@@ -34,7 +34,7 @@ public class WaterCollector : MonoBehaviour
     public GameObject studniaPrefab;
     public GameObject zbiornikPrefab;
 
-    public GameObject watterCollector;
+    public GameObject waterCollector;
 
 
     
@@ -139,7 +139,9 @@ public class WaterCollector : MonoBehaviour
         {
             if (ZbierakNaWode.pozostaleTuryDoBudowy == 0)
             {
-                if (gM.drewno < (short)ZbierakNaWode.BudowaZbierakaNaWode.DREWNO)
+                if (gM.drewno < (short)ZbierakNaWode.BudowaZbierakaNaWode.DREWNO &&
+                    gM.kamien < (short)ZbierakNaWode.BudowaZbierakaNaWode.KAMIEN &&
+                    gM.zelazo < (short)ZbierakNaWode.BudowaZbierakaNaWode.ZELAZO)
                 {
                     // Dla ludzi tworzących UI zrobić powiadomienie 
                     Debug.Log("Nie masz wystarczająco surowców");
@@ -147,12 +149,15 @@ public class WaterCollector : MonoBehaviour
                 }
 
                 gM.drewno -= (short)ZbierakNaWode.BudowaZbierakaNaWode.DREWNO;
+                gM.kamien -= (short)ZbierakNaWode.BudowaZbierakaNaWode.KAMIEN;
+                gM.zelazo -= (short)ZbierakNaWode.BudowaZbierakaNaWode.ZELAZO;
+
                 ZbierakNaWode.pozostaleTuryDoBudowy = (short)ZbierakNaWode.BudowaZbierakaNaWode.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
             else if (ZbierakNaWode.pozostaleTuryDoBudowy == 1)
             {
-                watterCollector = Instantiate(zbierakNaWodePrefab, GetBuildPostion(), transform.rotation);
+                waterCollector = Instantiate(zbierakNaWodePrefab, GetBuildPostion(), transform.rotation);
                 tierZbierakaNaWode = (short)ZbierakNaWode.RodzajZbierakaNaWode.ZBIERAK_NA_WODE;
                 ZbierakNaWode.pozostaleTuryDoBudowy = 0;
             }
@@ -177,7 +182,8 @@ public class WaterCollector : MonoBehaviour
             if (ZbierakNaWode.pozostaleTuryDoBudowy == 0)
             {
                 if (gM.drewno < (short)ZbierakNaWode.UpgradeStudnia.DREWNO &&
-                    gM.kamien < (short)ZbierakNaWode.UpgradeStudnia.KAMIEN)
+                    gM.kamien < (short)ZbierakNaWode.UpgradeStudnia.KAMIEN &&
+                    gM.zelazo < (short)ZbierakNaWode.UpgradeStudnia.ZELAZO)
                 {
                     Debug.Log("Nie masz wystarczająco surowców");
                     return;
@@ -185,12 +191,15 @@ public class WaterCollector : MonoBehaviour
 
                 gM.drewno -= (short)ZbierakNaWode.UpgradeStudnia.DREWNO;
                 gM.kamien -= (short)ZbierakNaWode.UpgradeStudnia.KAMIEN;
+                gM.zelazo -= (short)ZbierakNaWode.UpgradeStudnia.ZELAZO;
                 ZbierakNaWode.pozostaleTuryDoBudowy = (short)ZbierakNaWode.UpgradeStudnia.CZAS_BUDOWY; 
             }
 
             else if (ZbierakNaWode.pozostaleTuryDoBudowy == 1)
             {
-                watterCollector = Instantiate(studniaPrefab, GetBuildPostion(), transform.rotation);
+                Destroy(waterCollector);
+                GameObject studnia = Instantiate(studniaPrefab, GetBuildPostion(), transform.rotation);
+                waterCollector = studnia;
                 tierZbierakaNaWode = (short)ZbierakNaWode.RodzajZbierakaNaWode.STUDNIA;
                 ZbierakNaWode.pozostaleTuryDoBudowy = 0;
             }
@@ -230,7 +239,9 @@ public class WaterCollector : MonoBehaviour
 
             else if (ZbierakNaWode.pozostaleTuryDoBudowy == 1)
             {
-                watterCollector = Instantiate(zbierakNaWodePrefab, GetBuildPostion(), transform.rotation);
+                Destroy(waterCollector);
+                GameObject zbiornik = Instantiate(zbiornikPrefab, GetBuildPostion(), transform.rotation);
+                waterCollector = zbiornik;
                 tierZbierakaNaWode = (short)ZbierakNaWode.RodzajZbierakaNaWode.ZBIORNIK;
                 ZbierakNaWode.pozostaleTuryDoBudowy = 0;
             }
@@ -248,6 +259,42 @@ public class WaterCollector : MonoBehaviour
         }
 
     }// UpgradeNaZbironik
+
+    public void SprzedajBudynek()
+    {
+        switch (tierZbierakaNaWode)
+        {
+            case (short)ZbierakNaWode.RodzajZbierakaNaWode.ZBIERAK_NA_WODE:
+
+                Destroy(waterCollector);
+                gM.drewno -= (short)ZbierakNaWode.SprzedazZbierakaNaWode.DREWNO;
+                gM.kamien -= (short)ZbierakNaWode.SprzedazZbierakaNaWode.KAMIEN;
+                gM.zelazo -= (short)ZbierakNaWode.SprzedazZbierakaNaWode.ZELAZO;
+
+                break;
+
+            case (short)ZbierakNaWode.RodzajZbierakaNaWode.STUDNIA:
+
+                Destroy(waterCollector);
+                gM.drewno -= (short)ZbierakNaWode.SprzedazStudni.DREWNO;
+                gM.kamien -= (short)ZbierakNaWode.SprzedazStudni.KAMIEN;
+                gM.zelazo -= (short)ZbierakNaWode.SprzedazStudni.ZELAZO;
+
+                break;
+            case (short)ZbierakNaWode.RodzajZbierakaNaWode.ZBIORNIK:
+
+                Destroy(waterCollector);
+                gM.drewno -= (short)ZbierakNaWode.SprzedazZbiornika.DREWNO;
+                gM.kamien -= (short)ZbierakNaWode.SprzedazZbiornika.KAMIEN;
+                gM.zelazo -= (short)ZbierakNaWode.SprzedazZbiornika.ZELAZO;
+
+                break;
+            default:
+                Debug.LogWarning("Budynek już nie istnieje lub tier się nie zgadza");
+                break;
+
+        }
+    }//SprzedajBudynek
 
     #endregion
 

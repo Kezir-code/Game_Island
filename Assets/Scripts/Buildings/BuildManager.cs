@@ -68,6 +68,25 @@ public class Tartak
         DREWNO_TIER_3 = 35
     }
 
+    public enum SprzedazBudynkuTier1
+    {
+        DREWNO = 5,
+        KAMIEN = 0,
+        ZELAZO = 0
+    }
+    public enum SprzedazBudynkuTier2
+    {
+        DREWNO = 20,
+        KAMIEN = 10,
+        ZELAZO = 0
+    }
+    public enum SprzedazBudynkuTier3
+    {
+        DREWNO = 35,
+        KAMIEN = 25,
+        ZELAZO = 9
+    }
+
     public static short kosztStaminy = 4;
     public static short pozostaleTuryDoBudowy = 0;
     public static short czasPracy = 2;
@@ -106,6 +125,18 @@ public class PomostRybacki
         JEDZENIE_CHATA_RYBACKA = 100
     }
 
+    public enum SprzedazPomostRybacki
+    {
+        DREWNO = 15,
+        KAMIEN = 0,
+        ZELAZO = 0
+    }
+    public enum SprzedazChataRybacka
+    {
+        DREWNO = 20,
+        KAMIEN = 10,
+        ZELAZO = 3
+    }
 
     //public static short kosztStaminy = 4;
     public static short pozostaleTuryDoBudowy = 0;
@@ -131,11 +162,48 @@ public class Ognisko
         PIEC = 5
     }
 
-    public enum CzasBudowy
+    public enum BudowaOgnisko : short
     {
-        OGNISKO = 1,    
-        KUCHNIA = 8,    
-        PIEC = 8
+        DREWNO = 10,
+        KAMIEN = 5,
+        ZELAZO = 0,
+        CZAS_BUDOWY = 1
+    }
+
+    public enum UpgradeKuchnia : short
+    {
+        DREWNO = 0,
+        KAMIEN = 20,
+        ZELAZO = 8,
+        CZAS_BUDOWY = 8
+    }
+
+    public enum UpgradePiec : short
+    {
+        DREWNO = 0,
+        KAMIEN = 40,
+        ZELAZO = 0,
+        CZAS_BUDOWY = 8
+    }
+
+    public enum SprzedazOgnisko
+    {
+        DREWNO = 10,
+        KAMIEN = 5,
+        ZELAZO = 0
+    }
+    public enum SprzedazKuchnia
+    {
+        DREWNO = 0,
+        KAMIEN = 20,
+        ZELAZO = 4
+    }
+
+    public enum SprzedazPiec
+    {
+        DREWNO = 5,
+        KAMIEN = 20,
+        ZELAZO = 0
     }
 
     //public static short kosztStaminy = 4;
@@ -178,6 +246,20 @@ public class Legowisko
         CZAS_BUDOWY = 12
     }
 
+    public enum SprzedazLegowiska
+    {
+        DREWNO = 20,
+        KAMIEN = 0,
+        ZELAZO = 0
+    }
+
+    public enum SprzedazSypialni
+    {
+        DREWNO = 30,
+        KAMIEN = 10,
+        ZELAZO = 2
+    }
+
     //public static short kosztStaminy = 4;
     public static short pozostaleTuryDoBudowy = 0;
 
@@ -192,15 +274,15 @@ public class Ogrod
         PLANTACJA,
     }
 
-    public enum BudowaLegowiska : short
+    public enum BudowaOgrodu : short
     {
         DREWNO = 20,
         KAMIEN = 0,
         ZELAZO = 0,
-        CZAS_BUDOWY = 4
+        CZAS_BUDOWY = 2
     }
 
-    public enum BudowaSypialni : short
+    public enum BudowaPlantacji : short
     {
         DREWNO = 80,
         KAMIEN = 30,
@@ -225,6 +307,20 @@ public class Ogrod
 
         WODA_PLANTACJA = 2,
         STAMIN_PLANTACJA = 2
+    }
+
+    public enum SprzedazOgrodu
+    {
+        DREWNO = 10,
+        KAMIEN = 0,
+        ZELAZO = 0
+    }
+
+    public enum SprzedazPlantacji
+    {
+        DREWNO = 40,
+        KAMIEN = 15,
+        ZELAZO = 6
     }
 
     //public static short kosztStaminy = 4;
@@ -281,6 +377,27 @@ public class ZbierakNaWode
         ZBIORNIK = 4
     }
 
+    public enum SprzedazZbierakaNaWode
+    {
+        DREWNO = 5,
+        KAMIEN = 0,
+        ZELAZO = 0
+    }
+
+    public enum SprzedazStudni
+    {
+        DREWNO = 10,
+        KAMIEN = 20,
+        ZELAZO = 0
+    }
+
+    public enum SprzedazZbiornika
+    {
+        DREWNO = 40,
+        KAMIEN = 40,
+        ZELAZO = 12
+    }
+
     public static short pozostaleTuryDoBudowy = 0;
 
 }// Zbierak na wode
@@ -294,14 +411,71 @@ public class Warsztat
         KUZNIA
     }
 
-    public enum CzasBudowy
+    public enum BudowaWarsztat : short
     {
-        WARSZTAT = 12,
-        KUZNIA = 20
+        DREWNO = 30,
+        KAMIEN =40,
+        ZELAZO = 0,
+        CZAS_BUDOWY = 12
     }
 
+    public enum UpgradeKuznia : short
+    {
+        DREWNO = 40,
+        KAMIEN = 80,
+        ZELAZO = 12,
+        CZAS_BUDOWY = 8
+    }
 
+    public enum SprzedazWarsztat
+    {
+        DREWNO = 15,
+        KAMIEN = 20,
+        ZELAZO = 0
+    }
+
+    public enum SprzedazKuznia
+    {
+        DREWNO = 20,
+        KAMIEN = 40,
+        ZELAZO = 10
+    }
+
+    public static short pozostaleTuryDoBudowy = 0;
 }// Warsztat
+
+public class Magazyn
+{
+    public enum RodzajMagazynu
+    {
+        NONE,
+        MAGAZYN,
+    }
+
+    public enum BudowaMagazyn : short
+    {
+        DREWNO = 70,
+        KAMIEN = 40,
+        ZELAZO = 18,
+        CZAS_BUDOWY = 12
+    }
+
+    public enum SprzedazMagazyn
+    {
+        DREWNO = 35,
+        KAMIEN = 20,
+        ZELAZO = 9
+    }
+
+    public enum DodatkoweMiejsce
+    {
+        POJEMNOSC_WODY = 150,
+        POJEMNOSC_JEDZENIA = 125,
+        POJEMNOSC_SUROWCOW = 50
+    }
+
+    public static short pozostaleTuryDoBudowy = 0;
+}// Magazyn
 
 
 

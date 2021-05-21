@@ -161,7 +161,19 @@ public class Campfire : MonoBehaviour
         {
             if (Ognisko.pozostaleTuryDoBudowy == 0)
             {
-                Ognisko.pozostaleTuryDoBudowy = (short)Ognisko.CzasBudowy.OGNISKO; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                if (gM.drewno < (short)Ognisko.BudowaOgnisko.DREWNO &&
+                    gM.kamien < (short)Ognisko.BudowaOgnisko.KAMIEN &&
+                    gM.zelazo < (short)Ognisko.BudowaOgnisko.ZELAZO)
+                {
+                    // Dla ludzi tworzących UI zrobić powiadomienie 
+                    Debug.Log("Nie masz wystarczająco surowców");
+                    return;
+                }
+
+                gM.drewno -= (short)Ognisko.BudowaOgnisko.DREWNO;
+                gM.drewno -= (short)Ognisko.BudowaOgnisko.KAMIEN;
+                gM.drewno -= (short)Ognisko.BudowaOgnisko.ZELAZO;
+                Ognisko.pozostaleTuryDoBudowy = (short)Ognisko.BudowaOgnisko.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
             else if (Ognisko.pozostaleTuryDoBudowy == 1)
@@ -188,7 +200,19 @@ public class Campfire : MonoBehaviour
         {
             if (Ognisko.pozostaleTuryDoBudowy == 0)
             {
-                Ognisko.pozostaleTuryDoBudowy = (short)Ognisko.CzasBudowy.KUCHNIA; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                if (gM.drewno < (short)Ognisko.UpgradeKuchnia.DREWNO &&
+                    gM.kamien < (short)Ognisko.UpgradeKuchnia.KAMIEN &&
+                    gM.zelazo < (short)Ognisko.UpgradeKuchnia.ZELAZO)
+                {
+                    // Dla ludzi tworzących UI zrobić powiadomienie 
+                    Debug.Log("Nie masz wystarczająco surowców");
+                    return;
+                }
+
+                gM.drewno -= (short)Ognisko.UpgradeKuchnia.DREWNO;
+                gM.drewno -= (short)Ognisko.UpgradeKuchnia.KAMIEN;
+                gM.drewno -= (short)Ognisko.UpgradeKuchnia.ZELAZO;
+                Ognisko.pozostaleTuryDoBudowy = (short)Ognisko.UpgradeKuchnia.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
             else if (Ognisko.pozostaleTuryDoBudowy == 1)
@@ -218,7 +242,19 @@ public class Campfire : MonoBehaviour
         {
             if (Ognisko.pozostaleTuryDoBudowy == 0)
             {
-                Ognisko.pozostaleTuryDoBudowy = (short)Ognisko.CzasBudowy.PIEC; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                if (gM.drewno < (short)Ognisko.UpgradePiec.DREWNO &&
+                    gM.kamien < (short)Ognisko.UpgradePiec.KAMIEN &&
+                    gM.zelazo < (short)Ognisko.UpgradePiec.ZELAZO)
+                {
+                    // Dla ludzi tworzących UI zrobić powiadomienie 
+                    Debug.Log("Nie masz wystarczająco surowców");
+                    return;
+                }
+
+                gM.drewno -= (short)Ognisko.UpgradePiec.DREWNO;
+                gM.drewno -= (short)Ognisko.UpgradePiec.KAMIEN;
+                gM.drewno -= (short)Ognisko.UpgradePiec.ZELAZO;
+                Ognisko.pozostaleTuryDoBudowy = (short)Ognisko.UpgradePiec.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
             else if (Ognisko.pozostaleTuryDoBudowy == 1)
@@ -241,5 +277,41 @@ public class Campfire : MonoBehaviour
         }
     }//Ulepszenie Do Pieca
 
+    public void SprzedajBudynek()
+    {
+        switch (tierOgniska)
+        {
+            case (short)Ognisko.RodzajOgniska.OGNISKO:
+
+                Destroy(ognisko);
+                gM.drewno -= (short)Ognisko.SprzedazOgnisko.DREWNO;
+                gM.kamien -= (short)Ognisko.SprzedazOgnisko.KAMIEN;
+                gM.zelazo -= (short)Ognisko.SprzedazOgnisko.ZELAZO;
+
+                break;
+
+            case (short)Ognisko.RodzajOgniska.KUCHNIA:
+
+                Destroy(ognisko);
+                gM.drewno -= (short)Ognisko.SprzedazKuchnia.DREWNO;
+                gM.kamien -= (short)Ognisko.SprzedazKuchnia.KAMIEN;
+                gM.zelazo -= (short)Ognisko.SprzedazKuchnia.ZELAZO;
+
+                break;
+
+            case (short)Ognisko.RodzajOgniska.PIEC:
+
+                Destroy(ognisko);
+                gM.drewno -= (short)Ognisko.SprzedazPiec.DREWNO;
+                gM.kamien -= (short)Ognisko.SprzedazPiec.KAMIEN;
+                gM.zelazo -= (short)Ognisko.SprzedazPiec.ZELAZO;
+
+                break;
+            default:
+                Debug.LogWarning("Budynek już nie istnieje lub tier się nie zgadza");
+                break;
+
+        }
+    }//SprzedajBudynek
 
 }//class

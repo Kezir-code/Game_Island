@@ -108,4 +108,39 @@ public class GameManager : Singleton<GameManager>
             }
         }
     } // zlicz stamine
+
+    public void SprawdzPojemnoscMaxSurowcow()
+    {
+        //Sprawdza warunek dla wody
+        if (woda > pojemnoscWody)
+        {
+            woda = pojemnoscWody;
+        }
+
+        //Sprawdza warunek dla jedzenia
+        if (jedzenie > pojemnoscJedzenia)
+        {
+            jedzenie = pojemnoscJedzenia;
+        }
+
+        //Sprawdza warunek dla kamiena
+        if (kamien > pojemnoscSurowcow)
+        {
+            kamien = pojemnoscSurowcow;
+        }
+
+        //Sprawdza warunek dla drewna
+        if (drewno > pojemnoscSurowcow)
+        {
+            drewno = pojemnoscSurowcow;
+        }
+
+        //Sprawdza warunek dla zelaza
+        if (zelazo > pojemnoscSurowcow)
+        {
+            zelazo = pojemnoscSurowcow;
+        }
+    }//SprawdzPojemnoscMaxSurowcow
+
+
 }// class

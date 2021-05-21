@@ -212,7 +212,9 @@ using UnityEngine;
 			case (short)Tartak.TierTartaku.NONE:
                 if (Tartak.pozostaleTuryDoBudowy == 0)
                 {
-					if (gM.drewno < (short)Tartak.BudowaTartaku.DREWNO)
+					if (gM.drewno < (short)Tartak.BudowaTartaku.DREWNO &&
+						gM.kamien < (short)Tartak.BudowaTartaku.KAMIEN &&
+						gM.zelazo < (short)Tartak.BudowaTartaku.ZELAZO)
 					{
 						// Dla ludzi tworzących UI zrobić powiadomienie 
 						Debug.Log("Nie masz wystarczająco surowców");
@@ -220,6 +222,8 @@ using UnityEngine;
 					}
 
 					gM.drewno -= (short)Tartak.BudowaTartaku.DREWNO;
+					gM.drewno -= (short)Tartak.BudowaTartaku.KAMIEN;
+					gM.drewno -= (short)Tartak.BudowaTartaku.ZELAZO;
 					Tartak.pozostaleTuryDoBudowy = (short)(Tartak.BudowaTartaku.CZAS_BUDOWY); // #4
 				}
 
@@ -246,13 +250,15 @@ using UnityEngine;
                 if (Tartak.pozostaleTuryDoBudowy == 0)
                 {
 					if (gM.drewno < (short)Tartak.UpgradeTartakTier2.DREWNO &&
-						gM.kamien < (short)Tartak.UpgradeTartakTier2.KAMIEN)
+						gM.kamien < (short)Tartak.UpgradeTartakTier2.KAMIEN &&
+						gM.zelazo < (short)Tartak.UpgradeTartakTier2.ZELAZO)
 					{
 						Debug.Log("Nie masz wystarczająco surowców");
 						return;
 					}
 					gM.drewno -= (short)Tartak.UpgradeTartakTier2.DREWNO;
 					gM.kamien -= (short)Tartak.UpgradeTartakTier2.KAMIEN;
+					gM.zelazo -= (short)Tartak.UpgradeTartakTier2.ZELAZO;
 					Tartak.pozostaleTuryDoBudowy = (short)Tartak.UpgradeTartakTier2.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 9
 				}			
 
@@ -314,9 +320,46 @@ using UnityEngine;
 				break;
 			default:
 				Debug.LogWarning("Nie możesz już ulepszyć tartaku!!");
-				break;
+				break; // case 2
 		}
 
-	}
-	#endregion
-}
+	}//Tartak Tier Upgrade
+
+	public void SprzedajBudynek()
+	{
+		switch (tierTartaku)
+		{
+			case (short)Tartak.TierTartaku.TIER_1:
+
+				Destroy(sawmill);
+				gM.drewno -= (short)Tartak.SprzedazBudynkuTier1.DREWNO;
+				gM.kamien -= (short)Tartak.SprzedazBudynkuTier1.KAMIEN;
+				gM.zelazo -= (short)Tartak.SprzedazBudynkuTier1.ZELAZO;
+
+				break;
+
+			case (short)Tartak.TierTartaku.TIER_2:
+
+				Destroy(sawmill);
+				gM.drewno -= (short)Tartak.SprzedazBudynkuTier2.DREWNO;
+				gM.kamien -= (short)Tartak.SprzedazBudynkuTier2.KAMIEN;
+				gM.zelazo -= (short)Tartak.SprzedazBudynkuTier2.ZELAZO;
+
+				break;
+
+			case (short)Tartak.TierTartaku.TIER_3:
+
+				Destroy(sawmill);
+				gM.drewno -= (short)Tartak.SprzedazBudynkuTier3.DREWNO;
+				gM.kamien -= (short)Tartak.SprzedazBudynkuTier3.KAMIEN;
+				gM.zelazo -= (short)Tartak.SprzedazBudynkuTier3.ZELAZO;
+
+				break;
+			default:
+				Debug.LogWarning("Budynek już nie istnieje lub tier się nie zgadza");
+				break;
+
+		}
+	}//SprzedajBudynek
+		#endregion
+}//class

@@ -62,7 +62,9 @@ public class Den : MonoBehaviour
         {
             if (Legowisko.pozostaleTuryDoBudowy == 0)
             {
-                if (gM.drewno < (short)Legowisko.BudowaLegowiska.DREWNO)
+                if (gM.drewno < (short)Legowisko.BudowaLegowiska.DREWNO &&
+                    gM.kamien < (short)Legowisko.BudowaLegowiska.KAMIEN &&
+                    gM.zelazo < (short)Legowisko.BudowaLegowiska.ZELAZO)
                 {
                     // Dla ludzi tworzących UI zrobić powiadomienie 
                     Debug.Log("Nie masz wystarczająco surowców");
@@ -70,6 +72,9 @@ public class Den : MonoBehaviour
                 }
 
                 gM.drewno -= (short)Legowisko.BudowaLegowiska.DREWNO;
+                gM.drewno -= (short)Legowisko.BudowaLegowiska.KAMIEN;
+                gM.drewno -= (short)Legowisko.BudowaLegowiska.ZELAZO;
+
                 Legowisko.pozostaleTuryDoBudowy = (short)Legowisko.BudowaLegowiska.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
@@ -134,5 +139,32 @@ public class Den : MonoBehaviour
 
     }
 
+    public void SprzedajBudynek()
+    {
+        switch (gM.tierLegowskia)
+        {
+            case (short)Legowisko.RodzajLegowiska.LEGOWISKO:
+
+                Destroy(den);
+                gM.drewno -= (short)Legowisko.SprzedazLegowiska.DREWNO;
+                gM.kamien -= (short)Legowisko.SprzedazLegowiska.KAMIEN;
+                gM.zelazo -= (short)Legowisko.SprzedazLegowiska.ZELAZO;
+
+                break;
+
+            case (short)Legowisko.RodzajLegowiska.SYPIALNIA:
+
+                Destroy(den);
+                gM.drewno -= (short)Legowisko.SprzedazSypialni.DREWNO;
+                gM.kamien -= (short)Legowisko.SprzedazSypialni.KAMIEN;
+                gM.zelazo -= (short)Legowisko.SprzedazSypialni.ZELAZO;
+
+                break;
+            default:
+                Debug.LogWarning("Budynek już nie istnieje lub tier się nie zgadza");
+                break;
+
+        }
+    }//SprzedajBudynek
 
 }//class

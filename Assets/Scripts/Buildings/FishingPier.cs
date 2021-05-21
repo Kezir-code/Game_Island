@@ -175,14 +175,18 @@ public class FishingPier : MonoBehaviour
 			case 0:
                 if (PomostRybacki.pozostaleTuryDoBudowy == 0)
                 {
-					if (gM.drewno < (short)PomostRybacki.BudowaPomostRybacki.DREWNO)
+					if (gM.drewno < (short)PomostRybacki.BudowaPomostRybacki.DREWNO &&
+						gM.kamien < (short)PomostRybacki.BudowaPomostRybacki.KAMIEN &&
+						gM.zelazo < (short)PomostRybacki.BudowaPomostRybacki.ZELAZO)
 					{
-						// Dla ludzi tworzących UI zrobić powiadomienie 
 						Debug.Log("Nie masz wystarczająco surowców");
 						return;
 					}
 
 					gM.drewno -= (short)PomostRybacki.BudowaPomostRybacki.DREWNO;
+					gM.kamien -= (short)PomostRybacki.BudowaPomostRybacki.KAMIEN;
+					gM.zelazo -= (short)PomostRybacki.BudowaPomostRybacki.ZELAZO;
+					
 					PomostRybacki.pozostaleTuryDoBudowy = (short)PomostRybacki.BudowaPomostRybacki.CZAS_BUDOWY;
 				}
 
@@ -224,6 +228,7 @@ public class FishingPier : MonoBehaviour
 					GameObject FishingPierTier2 = (GameObject)Instantiate(prefabFishingPierTier2, GetBuildPostion(), transform.rotation);
 					fishingPier = FishingPierTier2;
 					tierPomostRybacki++;
+					PomostRybacki.pozostaleTuryDoBudowy = 0;
 				}
 
 				else
@@ -237,6 +242,34 @@ public class FishingPier : MonoBehaviour
 		}	
 			
 	}
+
+	public void SprzedajBudynek()
+	{
+		switch (tierPomostRybacki)
+		{
+			case (short)PomostRybacki.TierPomostRybacki.POMOST_RYBACKI:
+
+				Destroy(fishingPier);
+				gM.drewno -= (short)PomostRybacki.SprzedazPomostRybacki.DREWNO;
+				gM.kamien -= (short)PomostRybacki.SprzedazPomostRybacki.KAMIEN;
+				gM.zelazo -= (short)PomostRybacki.SprzedazPomostRybacki.ZELAZO;
+
+				break;
+
+			case (short)PomostRybacki.TierPomostRybacki.CHATA_RYBACKA:
+
+				Destroy(fishingPier);
+				gM.drewno -= (short)PomostRybacki.SprzedazChataRybacka.DREWNO;
+				gM.kamien -= (short)PomostRybacki.SprzedazChataRybacka.KAMIEN;
+				gM.zelazo -= (short)PomostRybacki.SprzedazChataRybacka.ZELAZO;
+
+				break;
+			default:
+				Debug.LogWarning("Budynek już nie istnieje lub tier się nie zgadza");
+				break;
+
+		}
+	}//SprzedajBudynek
 	#endregion
 }
 
