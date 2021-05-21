@@ -99,7 +99,7 @@ public class Workshop : MonoBehaviour
     {
         if (tierWarsztatu == (short)Warsztat.RodzajWarsztatu.NONE)
         {
-            if (pozostaleTuryDoBudowy == 0)
+            if (Warsztat.pozostaleTuryDoBudowy == 0)
             {
                 if (gM.drewno < (short)Warsztat.BudowaWarsztat.DREWNO &&
                     gM.kamien < (short)Warsztat.BudowaWarsztat.KAMIEN &&
@@ -112,20 +112,20 @@ public class Workshop : MonoBehaviour
                 gM.drewno -= (short)Warsztat.BudowaWarsztat.DREWNO;
                 gM.kamien -= (short)Warsztat.BudowaWarsztat.KAMIEN;
                 gM.zelazo -= (short)Warsztat.BudowaWarsztat.ZELAZO;
-                pozostaleTuryDoBudowy = (short)Warsztat.BudowaWarsztat.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
+                Warsztat.pozostaleTuryDoBudowy = (short)Warsztat.BudowaWarsztat.CZAS_BUDOWY; // to samo jak z pracą trzeba dodać +1 żeby to działało # 5
             }
 
-            else if (pozostaleTuryDoBudowy == 1)
+            else if (Warsztat.pozostaleTuryDoBudowy == 1)
             {
                 workshop = Instantiate(warsztatPrefab, GetBuildPostion(), transform.rotation);
                 tierWarsztatu = (short)Warsztat.RodzajWarsztatu.WARSZTAT;
-                pozostaleTuryDoBudowy = 0;
+                Warsztat.pozostaleTuryDoBudowy = 0;
                 gM.stoneAge = true;
 
             }
             else
             {
-                pozostaleTuryDoBudowy--;
+                Warsztat.pozostaleTuryDoBudowy--;
             }
         }
 
@@ -140,7 +140,7 @@ public class Workshop : MonoBehaviour
     {
         if (tierWarsztatu == (short)Warsztat.RodzajWarsztatu.WARSZTAT)
         {
-            if (pozostaleTuryDoBudowy == 0)
+            if (Warsztat.pozostaleTuryDoBudowy == 0)
             {
                 if (gM.drewno < (short)Warsztat.UpgradeKuznia.DREWNO &&
                     gM.kamien < (short)Warsztat.UpgradeKuznia.KAMIEN &&
@@ -153,23 +153,23 @@ public class Workshop : MonoBehaviour
                 gM.drewno -= (short)Warsztat.UpgradeKuznia.DREWNO;
                 gM.kamien -= (short)Warsztat.UpgradeKuznia.KAMIEN;
                 gM.zelazo -= (short)Warsztat.UpgradeKuznia.ZELAZO;
-                pozostaleTuryDoBudowy = (short)(short)Warsztat.UpgradeKuznia.CZAS_BUDOWY; 
+                Warsztat.pozostaleTuryDoBudowy = (short)(short)Warsztat.UpgradeKuznia.CZAS_BUDOWY; 
             }
 
-            else if (pozostaleTuryDoBudowy == 1)
+            else if (Warsztat.pozostaleTuryDoBudowy == 1)
             {
                 Destroy(workshop);
                 GameObject kuznia = Instantiate(kuzniaPrefab, GetBuildPostion(), transform.rotation);
                 workshop = kuznia;
                 tierWarsztatu = (short)Warsztat.RodzajWarsztatu.KUZNIA;
-                pozostaleTuryDoBudowy = 0;
+                Warsztat.pozostaleTuryDoBudowy = 0;
                 gM.ironAge = true;
 
             }
 
             else
             {
-                pozostaleTuryDoBudowy--;
+                Warsztat.pozostaleTuryDoBudowy--;
             }
         }
 

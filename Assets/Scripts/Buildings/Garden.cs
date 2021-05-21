@@ -73,7 +73,7 @@ public class Garden : MonoBehaviour
     public void PracaWOgrodzie(GameObject pracownik)
     {
         CharacterCreator worker = pracownik.GetComponent<CharacterCreator>();
-        if (!dostalemJedzenie)
+        if (!dostalemJedzenie || worker.tagPracy != Ogrod.tagPracy)
         {
             switch (tierOgrodu)
             {
@@ -85,6 +85,7 @@ public class Garden : MonoBehaviour
                         gM.stamina -= (short)Ogrod.KosztDzialania.STAMINA_OGROD;
                         czasPracyDoKonca = (short)Ogrod.Praca.CZAS_PRACY_OGROD;
                         dostalemJedzenie = true;
+                        worker.tagPracy = Ogrod.tagPracy;
                     }
                     break;
                 case (short)Ogrod.RodzajOgrodu.PLANTACJA:
@@ -95,6 +96,7 @@ public class Garden : MonoBehaviour
                         gM.stamina -= (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA;
                         czasPracyDoKonca = (short)Ogrod.Praca.CZAS_PRACY_PLANTACJA;
                         dostalemJedzenie = true;
+                        worker.tagPracy = Ogrod.tagPracy;
                     }
                     break;
                 default:
@@ -168,6 +170,7 @@ public class Garden : MonoBehaviour
                         Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)Ogrod.Praca.PRODUKCJA_PLANTACJA);
                         Debug.Log("Poziom drewna wynosi:" + gM.jedzenie);
                     }
+                    worker.tagPracy = "Nie pracuje";
                     break;
                 default:
                     break;

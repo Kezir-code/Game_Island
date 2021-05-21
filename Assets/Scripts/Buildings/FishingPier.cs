@@ -75,19 +75,21 @@ public class FishingPier : MonoBehaviour
 		foreach (CharacterCreator worker in characterCreators)
 		{
 			//int i = characterCreators.Count; // 0,1,2 czy 1,2,3?
-			if (worker.turyDoKoncaPracy == 0)
+			if (worker.turyDoKoncaPracy == 0 ||
+				worker.tagPracy != PomostRybacki.tagPracy)
 			{
 				worker.turyDoKoncaPracy = PomostRybacki.czasPracy; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
 				worker.czyPracuje = true;
+				worker.tagPracy = PomostRybacki.tagPracy;
 			}
 			// Czy bedzię pętla?	
 			// 3 - to noc, a w nocy nie pracujemy 		
-			if (gM.pora_dnia != 3)
+			else if (gM.pora_dnia != 3)
 			{
 				worker.turyDoKoncaPracy--;
 			}
 
-			if (worker.turyDoKoncaPracy == 1)
+			else if (worker.turyDoKoncaPracy == 1)
 			{
                 switch (tierPomostRybacki)
                 {
@@ -146,7 +148,7 @@ public class FishingPier : MonoBehaviour
 							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
 							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
 						}
-
+						
 						break;
                     default:
                         break;
@@ -154,6 +156,7 @@ public class FishingPier : MonoBehaviour
 				//gM.stamina -= minusStamina;
 				worker.turyDoKoncaPracy = 0;
 				worker.czyPracuje = false;
+				worker.tagPracy = "Nie pracuj";
 			}
 
 		}

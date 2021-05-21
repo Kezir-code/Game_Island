@@ -11,4 +11,5 @@ public class CharacterCreator : MonoBehaviour
     public int turyDoKoncaPracy;
     public bool czyPracuje;
     public string trait;
+    public string tagPracy;
 }

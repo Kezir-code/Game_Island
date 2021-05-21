@@ -87,6 +87,8 @@ public class Tartak
         ZELAZO = 9
     }
 
+    public const string tagPracy = "TARTAK";
+
     public static short kosztStaminy = 4;
     public static short pozostaleTuryDoBudowy = 0;
     public static short czasPracy = 2;
@@ -138,6 +140,7 @@ public class PomostRybacki
         ZELAZO = 3
     }
 
+    public const string tagPracy = "RYBAK";
     //public static short kosztStaminy = 4;
     public static short pozostaleTuryDoBudowy = 0;
     public static short czasPracy = 8;
@@ -208,7 +211,7 @@ public class Ognisko
 
     //public static short kosztStaminy = 4;
     public static short pozostaleTuryDoBudowy = 0;
-
+    public const string tagPracy = "KUCHNIA";
     public static short iloscZelaza = 8;
     public static short czasPracyKuznia = 4;
     public static short iloscKamieniaDoPieca = 40;
@@ -323,6 +326,7 @@ public class Ogrod
         ZELAZO = 6
     }
 
+    public const string tagPracy = "OGROD";
     //public static short kosztStaminy = 4;
     public static short pozostaleTuryDoBudowy = 0;
 
@@ -441,6 +445,7 @@ public class Warsztat
         ZELAZO = 10
     }
 
+    public const string tagPracy = "WARSZTAT";
     public static short pozostaleTuryDoBudowy = 0;
 }// Warsztat
 

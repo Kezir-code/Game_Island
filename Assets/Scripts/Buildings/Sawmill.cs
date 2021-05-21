@@ -82,11 +82,12 @@ using UnityEngine;
 	{
         foreach (CharacterCreator worker in characterCreators)
         {
-			//int i = characterCreators.Count; // 0,1,2 czy 1,2,3?
-			if (worker.czyPracuje == false)
+			if (worker.czyPracuje == false || 
+				worker.tagPracy != Tartak.tagPracy)
 			{
 				worker.turyDoKoncaPracy = Tartak.czasPracy; 
 				worker.czyPracuje = true;
+				worker.tagPracy = Tartak.tagPracy;
 			}
 			
 			// 3 - to noc, a w nocy nie pracujemy 		

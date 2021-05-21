@@ -133,16 +133,25 @@ public class Campfire : MonoBehaviour
             
             if (gM.drewno >= (short)Ognisko.KosztDzialnia.KUCHNIA) // zmiana tury
             {
-                worker.czyPracuje = true;
-                gM.drewno--;
-                //gM.kuchniaBonus = true;
-                Ognisko.kuchniaBonus = true;
+                if (worker.tagPracy != Ognisko.tagPracy)
+                {
+                    worker.czyPracuje = true;
+                    gM.drewno--;
+                    Ognisko.kuchniaBonus = true;
+                    worker.tagPracy = Ognisko.tagPracy;
+                }
+                else
+                {
+                    worker.czyPracuje = true;
+                    gM.drewno--;
+                    Ognisko.kuchniaBonus = true;
+                }
             }
             else
             {
                 worker.czyPracuje = false;
                 Ognisko.kuchniaBonus = false;
-
+                worker.tagPracy = "NIE PRACUJE";
             }
         }
 
