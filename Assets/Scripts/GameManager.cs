@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : Singleton<GameManager>
 {
     private GameObject activeScreen;
     private Camera camera;
-    public List<GameObject> people;
-    //public List<GameObject> people = Resources.LoadAll<GameObject>("Characters").ToList();
+    public List<GameObject> people = new List<GameObject>();
+
+    private Sawmill sawmill;
+    private FishingPier fishingPier;
+
     public int drewno;
     public int woda;
     public int dzien;
@@ -21,16 +23,20 @@ public class GameManager : Singleton<GameManager>
     {
         camera = CameraMovement.Instance.GetComponent<Camera>();
         GetAttributes();
+        
     }
    // Update is called once per frame
     void Update()
     {
-        people = Resources.LoadAll<GameObject>("Characters").ToList();
+        
     }
 
     public void Zmiana_Pory_Dnia()
     {
         pora_dnia = (pora_dnia + 1) % 3;
+        // ponizsze funkcje przyjmuja List<CharacterController> zamiast List<GameObject>
+        //sawmill.PracaWTartaku(people);
+        //fishingPier.PracaWPomoscieRybackim(people);
     }
 
     public void Zmiana_kamien(int kamien_update)
@@ -66,8 +72,7 @@ public class GameManager : Singleton<GameManager>
     {
         for (int i = 0; i < people.Count; i++)
         {
-            people[i].GetComponent<CharacterCreator>();
-            Debug.Log(name);
+            Debug.Log(people[i].GetComponent<CharacterCreator>());
         }
         
     }
