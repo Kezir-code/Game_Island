@@ -6,7 +6,7 @@ public class Workshop : MonoBehaviour
 {
     public short tierWarsztatu;
 
-    public GameObject pracownik;
+    public List<GameObject> pracownik;
 
     //Budowa/upgrade
     private int pozostaleTuryDoBudowy;
@@ -63,8 +63,12 @@ public class Workshop : MonoBehaviour
     {
         if (gM.stoneAge)
         {
-            CharacterCreator worker = pracownik.GetComponent<CharacterCreator>();
-            worker.czyPracuje = true;
+            foreach (var item in pracownik)
+            {
+                CharacterCreator worker = item.GetComponent<CharacterCreator>();
+                worker.czyPracuje = true;
+                gM.stamina -= (short)Warsztat.KosztDzialania.WARSZTAT;
+            }
         }
         else
         {
@@ -79,13 +83,18 @@ public class Workshop : MonoBehaviour
     /// pracownika czyParcuje na false w CharacterCreator po zakonczeniu pracy
     /// </summary>
     /// <param name="pracownik"></param>
-    public void PracaWWkuzni(GameObject pracownik)
+    public void PracaWWkuzni()
     {
         if (gM.stoneAge &&
             gM.ironAge)
         {
-            CharacterCreator worker = pracownik.GetComponent<CharacterCreator>();
-            worker.czyPracuje = true;
+            foreach (var item in pracownik)
+            {
+                CharacterCreator worker = item.GetComponent<CharacterCreator>();
+                worker.czyPracuje = true;
+                gM.stamina -= (short)Warsztat.KosztDzialania.KUZNIA;
+            }
+            
         }
         else
         {

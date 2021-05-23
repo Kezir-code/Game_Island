@@ -41,10 +41,13 @@ public class GameManager : Singleton<GameManager>
     public bool stoneAge;
     public bool ironAge;
 
-    private Sawmill sawmill;
-    private FishingPier fishingPier;
-    private Garden garden;
-    private Campfire campfire;
+    public Sawmill sawmill;
+    public FishingPier fishingPier;
+    public Garden garden;
+    public Campfire campfire;
+    public Warehouse warehouse;
+    public WaterCollector waterCollector;
+    public Workshop workshop;
 
     void Start()
     {
@@ -62,9 +65,13 @@ public class GameManager : Singleton<GameManager>
         pora_dnia = (pora_dnia + 1) % 3;
         //ponizsze funkcje przyjmuja List<CharacterController> zamiast List<GameObject>
         WorkManagerSawmill();
-        WorkManageKitchen();
+        WorkManagerKitchen();
         WorkManagerFishingPier();
-        WorkManagerGarden();
+        WorkManagerGarden();  
+        WorkManagerWaterColletor();
+        WorkManagerWorkshop();
+        SprawdzPojemnoscMaxSurowcow();
+        ZliczStamine();
     }
 
     public void Zmiana_kamien(int kamien_update)
@@ -236,7 +243,7 @@ public class GameManager : Singleton<GameManager>
         }
     }//WorkManagerGarden
 
-    public void WorkManageKitchen()
+    public void WorkManagerKitchen()
     {
         if (campfire.tierOgniska == (short)Ognisko.RodzajOgniska.KUCHNIA &&
             pracownikDoKuchni.Count == 1)
@@ -261,7 +268,35 @@ public class GameManager : Singleton<GameManager>
                 }
             }
         }
+
+        else if (campfire.tierOgniska == (short)Ognisko.RodzajOgniska.OGNISKO ||
+            campfire.tierOgniska == (short)Ognisko.RodzajOgniska.PIEC)
+        {
+            campfire.PracaWOgnisko();
+        }
+
+
+
     }//WorkManagerGarden
 
+    public void WorkManagerWaterColletor()
+    {
+        if (waterCollector.tierZbierakaNaWode > 0)
+        {
+            waterCollector.PracaWZbierakuNaWode();
+        }
+    }
+
+    public void WorkManagerWorkshop()
+    {
+        if (workshop.tierWarsztatu == (short)Warsztat.RodzajWarsztatu.WARSZTAT)
+        {
+            workshop.PracaWWarsztacie();
+        }
+        else if (workshop.tierWarsztatu == (short)Warsztat.RodzajWarsztatu.KUZNIA)
+        {
+            workshop.PracaWWkuzni();
+        }
+    }
 
 }// class

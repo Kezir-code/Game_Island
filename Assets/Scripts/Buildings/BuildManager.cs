@@ -446,6 +446,12 @@ public class Warsztat
         ZELAZO = 10
     }
 
+    public enum KosztDzialania
+    {
+        WARSZTAT = 5,
+        KUZNIA = 5
+    }
+
     public const string tagPracy = "WARSZTAT";
     public static short pozostaleTuryDoBudowy = 0;
 }// Warsztat
