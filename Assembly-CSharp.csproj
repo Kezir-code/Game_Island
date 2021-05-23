@@ -81,6 +81,8 @@
     <Compile Include="Assets\Scripts\Mapa\LevelManager.cs" />
     <Compile Include="Assets\Scripts\Mapa\Point.cs" />
     <Compile Include="Assets\Scripts\Mapa\TileScript.cs" />
+    <Compile Include="Assets\Scripts\Missions\Gathering.cs" />
+    <Compile Include="Assets\Scripts\Missions\MissionManger.cs" />
     <Compile Include="Assets\Scripts\MusicPlayer.cs" />
     <Compile Include="Assets\Scripts\PauzaMenu.cs" />
     <Compile Include="Assets\Scripts\SelectionManager.cs" />

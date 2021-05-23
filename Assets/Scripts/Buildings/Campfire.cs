@@ -26,6 +26,7 @@ public class Campfire : MonoBehaviour
     */
     public short tierOgniska = 0;
     //praca
+    public List<GameObject> pracownik;
     private bool kamieninSkonsumowany;
     private short iloscTurDoKoncaPracyPieca;
     // upgrade
@@ -125,41 +126,47 @@ public class Campfire : MonoBehaviour
     /// <param name="pracownik">
     /// Pracownik jest wymagany do kuchni. Zmiena wartosc CharacterCreator.czyPracuje na true.
     /// </param>
-    public void PracaWKuchni(GameObject pracownik)
+    public void PracaWKuchni()
     {
         if (tierOgniska == (short)Ognisko.RodzajOgniska.KUCHNIA)
         {
-            CharacterCreator worker = pracownik.GetComponent<CharacterCreator>();
-            
-            if (gM.drewno >= (short)Ognisko.KosztDzialnia.KUCHNIA) // zmiana tury
+            foreach (GameObject item in pracownik)
             {
-                if (worker.tagPracy != Ognisko.tagPracy)
+                CharacterCreator worker = item.GetComponent<CharacterCreator>();
+                if (gM.drewno >= (short)Ognisko.KosztDzialnia.KUCHNIA) // zmiana tury
                 {
-                    worker.czyPracuje = true;
-                    gM.drewno--;
-                    Ognisko.kuchniaBonus = true;
-                    worker.tagPracy = Ognisko.tagPracy;
+                    if (worker.tagPracy != Ognisko.tagPracy)
+                    {
+                        worker.czyPracuje = true;
+                        gM.drewno--;
+                        Ognisko.kuchniaBonus = true;
+                        worker.tagPracy = Ognisko.tagPracy;
+                    }
+                    else
+                    {
+                        worker.czyPracuje = true;
+                        gM.drewno--;
+                        Ognisko.kuchniaBonus = true;
+                    }
                 }
                 else
                 {
-                    worker.czyPracuje = true;
-                    gM.drewno--;
-                    Ognisko.kuchniaBonus = true;
+                    worker.czyPracuje = false;
+                    Ognisko.kuchniaBonus = false;
+                    worker.tagPracy = "NIE PRACUJE";
                 }
-            }
-            else
-            {
-                worker.czyPracuje = false;
-                Ognisko.kuchniaBonus = false;
-                worker.tagPracy = "NIE PRACUJE";
+
             }
         }
-
         else
         {
             Debug.LogWarning("Skrypt jest tylko do kuchni. Tier się nie zgadza");
         }
-                
+
+
+        }
+    
+
     }// Praca W kuchni
     #endregion
 

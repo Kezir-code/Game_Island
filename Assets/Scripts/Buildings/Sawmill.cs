@@ -35,8 +35,10 @@ using UnityEngine;
 	//private short[] timeToEndBuilding = new short[3] { 4, 8, 12 };
 	//public static short pozostaleTuryDoBudowy = 0;
 
-	private short tierTartaku = 0;
-	
+	public short tierTartaku = 0;
+
+	public List<CharacterCreator> characters;
+
 	public GameObject prefabSawmillTier1;
 	public GameObject prefabSawmillTier2;
 	public GameObject prefabSawmillTier3;
@@ -78,33 +80,21 @@ using UnityEngine;
 
     #region Praca
 
-    public void PracaWTartaku(List<CharacterCreator> characterCreators)
+    public void PracaWTartaku()
 	{
-        foreach (CharacterCreator worker in characterCreators)
+        foreach (CharacterCreator worker in characters)
         {
 			if (worker.czyPracuje == false || 
 				worker.tagPracy != Tartak.tagPracy)
 			{
 				worker.turyDoKoncaPracy = Tartak.czasPracy; 
 				worker.czyPracuje = true;
-				worker.tagPracy = Tartak.tagPracy;
+				worker.tagPracy = Tartak.tagPracy;  // #2
 			}
 			
-			// 3 - to noc, a w nocy nie pracujemy 		
-			else if (gM.pora_dnia != 3 &&			 
-				gM.stamina >= Tartak.kosztStaminy)
-			{
-				worker.turyDoKoncaPracy--;					
-				gM.stamina -= Tartak.kosztStaminy;			
-			}
 
-            else if (gM.stamina < Tartak.kosztStaminy) 
-            {
-				worker.czyPracuje = false;
-				Debug.Log("Brakuje staminy");
-			}
 
-			if (worker.turyDoKoncaPracy == 1 )
+			else if (worker.turyDoKoncaPracy == 1 )
 			{
                 switch (tierTartaku)
                 {
@@ -190,7 +180,21 @@ using UnityEngine;
 						Debug.Log("Poziom drewna wynosi:" + gM.drewno);
 						break;
                 }
-                
+
+			}
+
+			// 3 - to noc, a w nocy nie pracujemy 		
+			else if (gM.pora_dnia != 3 &&
+			gM.stamina >= Tartak.kosztStaminy)
+			{
+				worker.turyDoKoncaPracy--;
+				gM.stamina -= Tartak.kosztStaminy;
+			}
+
+			else if (gM.stamina < Tartak.kosztStaminy)
+			{
+				worker.czyPracuje = false;
+				Debug.Log("Brakuje staminy");
 			}
 
 		}

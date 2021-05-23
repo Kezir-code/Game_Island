@@ -9,7 +9,7 @@ public class FishingPier : MonoBehaviour
 	//	Tier 1 i 2
 
 	//praca
-	public static short tierPomostRybacki = 0;
+	public short tierPomostRybacki = 0;
 	//private short[] getSurowce = new short[2] { 40, 90};
 	//public short minusStamina = 1;
 	//private short czasPracy = 5; // dodaj +1 do tur(Jezeli ktoś pracuje 4 tury to dajesz 5)
@@ -30,6 +30,7 @@ public class FishingPier : MonoBehaviour
 
 	//public float mnoznikZKuchni = 1.2f; // wstawić to do gamemanger'a?
 
+	public List<CharacterCreator> pracownicy;
 
 	public GameObject prefabFishingPierTier1;
 	public GameObject prefabFishingPierTier2;
@@ -70,9 +71,9 @@ public class FishingPier : MonoBehaviour
 
 	#region Praca
 
-	public void PracaWPomoscieRybackim(List<CharacterCreator> characterCreators)
+	public void PracaWPomoscieRybackim()
 	{
-		foreach (CharacterCreator worker in characterCreators)
+		foreach (CharacterCreator worker in pracownicy)
 		{
 			//int i = characterCreators.Count; // 0,1,2 czy 1,2,3?
 			if (worker.turyDoKoncaPracy == 0 ||
@@ -82,81 +83,91 @@ public class FishingPier : MonoBehaviour
 				worker.czyPracuje = true;
 				worker.tagPracy = PomostRybacki.tagPracy;
 			}
+			
+			else if (worker.turyDoKoncaPracy == 1)
+			{
+                if (gM.drewno >= PomostRybacki.kosztPracy)
+                {
+					switch (tierPomostRybacki)
+					{
+						case (short)PomostRybacki.TierPomostRybacki.POMOST_RYBACKI:
+							if (Ognisko.kuchniaBonus == true && worker.trait == Trait.ZAWODOWY_KUCHARZ)
+							{
+								gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI *
+									PomostRybacki.mnoznikZKuchni * Trait.MODYFIKATOR_KUCHARZ_TRAIT);
+
+								Debug.Log("Robotnik " + worker.name + " wyprodukował: " +
+									(short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI * PomostRybacki.mnoznikZKuchni * Trait.MODYFIKATOR_KUCHARZ_TRAIT);
+								Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+							}
+
+							else if (Ognisko.kuchniaBonus == true)
+							{
+								gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI * PomostRybacki.mnoznikZKuchni);
+
+								Debug.Log("Robotnik " + worker.name + " wyprodukował: " +
+									(short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI * PomostRybacki.mnoznikZKuchni);
+								Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+							}
+
+							else
+							{
+								gM.jedzenie = (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI;
+
+								Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
+								Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+							}
+
+							break;
+
+						case (short)PomostRybacki.TierPomostRybacki.CHATA_RYBACKA:
+							if (Ognisko.kuchniaBonus == true && worker.trait == Trait.ZAWODOWY_KUCHARZ)
+							{
+								gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_CHATA_RYBACKA *
+									PomostRybacki.mnoznikZKuchni * Trait.MODYFIKATOR_KUCHARZ_TRAIT);
+
+								Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
+								Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+							}
+
+							else if (Ognisko.kuchniaBonus == true)
+							{
+								gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_CHATA_RYBACKA * PomostRybacki.mnoznikZKuchni);
+
+								Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
+								Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+							}
+
+							else
+							{
+								gM.jedzenie = (short)PomostRybacki.DostanSurowce.JEDZENIE_CHATA_RYBACKA;
+
+								Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
+								Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
+							}
+
+							break;
+						default:
+							break;
+					}
+					//gM.stamina -= minusStamina;
+					worker.turyDoKoncaPracy = 0;
+					worker.czyPracuje = false;
+					worker.tagPracy = "Nie pracuj";
+					gM.drewno -= PomostRybacki.kosztPracy;
+                
+                }
+                else
+                {
+					Debug.Log("Nie ma drewna");
+                }
+			}
+
 			// Czy bedzię pętla?	
 			// 3 - to noc, a w nocy nie pracujemy 		
 			else if (gM.pora_dnia != 3)
 			{
 				worker.turyDoKoncaPracy--;
-			}
-
-			else if (worker.turyDoKoncaPracy == 1)
-			{
-                switch (tierPomostRybacki)
-                {
-					case (short)PomostRybacki.TierPomostRybacki.POMOST_RYBACKI:
-						if (Ognisko.kuchniaBonus == true && worker.trait == Trait.ZAWODOWY_KUCHARZ)
-						{
-							gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI *
-								PomostRybacki.mnoznikZKuchni * Trait.MODYFIKATOR_KUCHARZ_TRAIT);
-
-							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + 
-								(short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI * PomostRybacki.mnoznikZKuchni * Trait.MODYFIKATOR_KUCHARZ_TRAIT);
-							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
-						}
-
-                        else if (Ognisko.kuchniaBonus == true)
-                        {
-							gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI * PomostRybacki.mnoznikZKuchni);
-
-							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + 
-								(short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI * PomostRybacki.mnoznikZKuchni);
-							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
-						}
-
-						else
-						{
-							gM.jedzenie = (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI;
-
-							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
-							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
-						}
-
-						break;
-
-					case (short)PomostRybacki.TierPomostRybacki.CHATA_RYBACKA:
-						if (Ognisko.kuchniaBonus == true && worker.trait == Trait.ZAWODOWY_KUCHARZ)
-						{
-							gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_CHATA_RYBACKA * 
-								PomostRybacki.mnoznikZKuchni * Trait.MODYFIKATOR_KUCHARZ_TRAIT);
-
-							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
-							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
-						}
-
-						else if (Ognisko.kuchniaBonus == true)
-						{
-							gM.jedzenie = (int)((short)PomostRybacki.DostanSurowce.JEDZENIE_CHATA_RYBACKA * PomostRybacki.mnoznikZKuchni);
-
-							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
-							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
-						}
-
-						else
-						{
-							gM.jedzenie = (short)PomostRybacki.DostanSurowce.JEDZENIE_CHATA_RYBACKA;
-
-							Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)PomostRybacki.DostanSurowce.JEDZENIE_POMOST_RYBACKI);
-							Debug.Log("Poziom jedzenia wynosi:" + gM.drewno);
-						}
-						
-						break;
-                    default:
-                        break;
-                }
-				//gM.stamina -= minusStamina;
-				worker.turyDoKoncaPracy = 0;
-				worker.czyPracuje = false;
-				worker.tagPracy = "Nie pracuj";
 			}
 
 		}

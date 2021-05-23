@@ -143,6 +143,7 @@ public class PomostRybacki
     public const string tagPracy = "RYBAK";
     //public static short kosztStaminy = 4;
     public static short pozostaleTuryDoBudowy = 0;
+    public static short kosztPracy = 1;
     public static short czasPracy = 8;
     public static float mnoznikZKuchni = 1.2f;
 

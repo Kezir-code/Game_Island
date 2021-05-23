@@ -17,9 +17,15 @@ public class GameManager : Singleton<GameManager>
     public int zelazo;
 
     // Pojemność magazynu
-    public int pojemnoscJedzenia = 100;   // default 100
-    public int pojemnoscWody = 200;       // default 200  
-    public int pojemnoscSurowcow = 300;   // default 300
+    public int pojemnoscJedzenia = 250;   // default 100
+    public int pojemnoscWody = 300;       // default 200  
+    public int pojemnoscSurowcow = 100;   // default 300
+
+    //Listy pomocnicze do przenoszenia ludzi z people 
+    public List<GameObject> pracownicDoTartaku;
+    public List<GameObject> pracownicyDoPomostu;
+    public List<GameObject> pracownicyDoOgrodu;
+    public List<GameObject> pracownikDoKuchni;
 
     //Przenisono do BuildManager
     //bonusy z ogniska itp.
@@ -35,6 +41,10 @@ public class GameManager : Singleton<GameManager>
     public bool stoneAge;
     public bool ironAge;
 
+    private Sawmill sawmill;
+    private FishingPier fishingPier;
+    private Garden garden;
+    private Campfire campfire;
 
     void Start()
     {
@@ -50,6 +60,11 @@ public class GameManager : Singleton<GameManager>
     public void Zmiana_Pory_Dnia()
     {
         pora_dnia = (pora_dnia + 1) % 3;
+        //ponizsze funkcje przyjmuja List<CharacterController> zamiast List<GameObject>
+        WorkManagerSawmill();
+        WorkManageKitchen();
+        WorkManagerFishingPier();
+        WorkManagerGarden();
     }
 
     public void Zmiana_kamien(int kamien_update)
@@ -141,6 +156,112 @@ public class GameManager : Singleton<GameManager>
             zelazo = pojemnoscSurowcow;
         }
     }//SprawdzPojemnoscMaxSurowcow
+
+    public void WorkManagerSawmill()
+    {
+        if (sawmill.tierTartaku > 0 &&
+            pracownicDoTartaku.Count > 0)
+        {
+            foreach (var pracownik in pracownicDoTartaku)
+            {
+                sawmill.characters.Add(pracownik.GetComponent<CharacterCreator>());
+            }
+            sawmill.PracaWTartaku();
+            byte count = 0;
+            foreach (var pracownik in pracownicDoTartaku) //zmienna do pracy w tartaku
+            {
+
+                if (!sawmill.characters[count].czyPracuje)
+                {
+                    sawmill.characters.RemoveAt(count);
+                    pracownicDoTartaku.RemoveAt(count);
+                }
+                else
+                {
+                    count++;
+                }
+            }
+        }
+    }//WorkManagerSawmill
+
+    public void WorkManagerFishingPier()
+    {
+        if (fishingPier.tierPomostRybacki > 0 &&
+            pracownicyDoPomostu.Count > 0)
+        {
+            foreach (var pracownik in pracownicyDoPomostu)
+            {
+                fishingPier.pracownicy.Add(pracownik.GetComponent<CharacterCreator>());
+            }
+           fishingPier.PracaWPomoscieRybackim();
+            byte count = 0;
+            foreach (var pracownik in pracownicyDoPomostu) 
+            {
+                if (!fishingPier.pracownicy[count].czyPracuje) // szukanie po pracownikach czy pracują
+                {
+                    fishingPier.pracownicy.RemoveAt(count);
+                    pracownicyDoPomostu.RemoveAt(count);
+                }
+                else
+                {
+                    count++;
+                }
+            }
+        }
+    }//WorkManagerFishingPier
+
+    public void WorkManagerGarden()
+    {
+        if (garden.tierOgrodu > 0 &&
+            pracownicyDoOgrodu.Count > 0)
+        {
+            foreach (var pracownik in pracownicyDoOgrodu)
+            {
+                garden.pracownik.Add(pracownik.GetComponent<CharacterCreator>());
+            }
+            garden.PracaWOgrodzie();
+            byte count = 0;
+            foreach (var pracownik in pracownicyDoOgrodu)
+            {
+                if (!garden.pracownik[count].czyPracuje) // szukanie po pracownikach czy pracują
+                {
+                    garden.pracownik.RemoveAt(count);
+                    pracownicyDoOgrodu.RemoveAt(count);
+                }
+                else
+                {
+                    count++;
+                }
+            }
+        }
+    }//WorkManagerGarden
+
+    public void WorkManageKitchen()
+    {
+        if (campfire.tierOgniska == (short)Ognisko.RodzajOgniska.KUCHNIA &&
+            pracownikDoKuchni.Count == 1)
+        {
+            foreach (var item in pracownikDoKuchni)
+            {
+                campfire.pracownik.Add(item);
+            }
+
+            campfire.PracaWKuchni();
+            byte count = 0;
+            foreach (var pracownik in pracownikDoKuchni)
+            {
+                if (!garden.pracownik[count].czyPracuje) // szukanie po pracownikach czy pracują
+                {
+                    campfire.pracownik.RemoveAt(count);
+                    pracownikDoKuchni.RemoveAt(count);
+                }
+                else
+                {
+                    count++;
+                }
+            }
+        }
+    }//WorkManagerGarden
 
 
 }// class

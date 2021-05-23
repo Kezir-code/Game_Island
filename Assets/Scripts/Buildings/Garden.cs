@@ -32,6 +32,7 @@ public class Garden : MonoBehaviour
     private short czasPracyDoKonca;
     public bool dostalemJedzenie;
 
+    public List<CharacterCreator> pracownik;
     public GameObject ogrodPrefab;
     public GameObject plantacjaPrefab;
 
@@ -70,113 +71,118 @@ public class Garden : MonoBehaviour
         
     }
 
-    public void PracaWOgrodzie(GameObject pracownik)
+    public void PracaWOgrodzie()
     {
-        CharacterCreator worker = pracownik.GetComponent<CharacterCreator>();
-        if (!dostalemJedzenie || worker.tagPracy != Ogrod.tagPracy)
+        foreach (var worker in pracownik)
         {
-            switch (tierOgrodu)
+            if (!dostalemJedzenie || worker.tagPracy != Ogrod.tagPracy)
             {
-                case (short)Ogrod.RodzajOgrodu.OGROD:
-                    if (gM.woda >= (short)Ogrod.KosztDzialania.WODA_OGROD)
-                    {
-                        worker.czyPracuje = true;
-                        gM.woda -= (short)Ogrod.KosztDzialania.WODA_OGROD;
-                        gM.stamina -= (short)Ogrod.KosztDzialania.STAMINA_OGROD;
-                        czasPracyDoKonca = (short)Ogrod.Praca.CZAS_PRACY_OGROD;
-                        dostalemJedzenie = true;
-                        worker.tagPracy = Ogrod.tagPracy;
-                    }
-                    break;
-                case (short)Ogrod.RodzajOgrodu.PLANTACJA:
-                    if (gM.woda >= (short)Ogrod.KosztDzialania.WODA_PLANTACJA)
-                    {
-                        worker.czyPracuje = true;
-                        gM.woda -= (short)Ogrod.KosztDzialania.WODA_PLANTACJA;
-                        gM.stamina -= (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA;
-                        czasPracyDoKonca = (short)Ogrod.Praca.CZAS_PRACY_PLANTACJA;
-                        dostalemJedzenie = true;
-                        worker.tagPracy = Ogrod.tagPracy;
-                    }
-                    break;
-                default:
-                    break;
+                switch (tierOgrodu)
+                {
+                    case (short)Ogrod.RodzajOgrodu.OGROD:
+                        if (gM.woda >= (short)Ogrod.KosztDzialania.WODA_OGROD)
+                        {
+                            worker.czyPracuje = true;
+                            gM.woda -= (short)Ogrod.KosztDzialania.WODA_OGROD;
+                            gM.stamina -= (short)Ogrod.KosztDzialania.STAMINA_OGROD;
+                            czasPracyDoKonca = (short)Ogrod.Praca.CZAS_PRACY_OGROD;
+                            dostalemJedzenie = true;
+                            worker.tagPracy = Ogrod.tagPracy;
+                        }
+                        break;
+                    case (short)Ogrod.RodzajOgrodu.PLANTACJA:
+                        if (gM.woda >= (short)Ogrod.KosztDzialania.WODA_PLANTACJA)
+                        {
+                            worker.czyPracuje = true;
+                            gM.woda -= (short)Ogrod.KosztDzialania.WODA_PLANTACJA;
+                            gM.stamina -= (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA;
+                            czasPracyDoKonca = (short)Ogrod.Praca.CZAS_PRACY_PLANTACJA;
+                            dostalemJedzenie = true;
+                            worker.tagPracy = Ogrod.tagPracy;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
 
-        else
-        {
-            switch (tierOgrodu)
+            else
             {
-                case (short)Ogrod.RodzajOgrodu.OGROD:
-                    if (gM.pora_dnia != 3 &&
-                        gM.stamina >= (short)Ogrod.KosztDzialania.STAMINA_OGROD)
-                    {
-                        czasPracyDoKonca--;
-                        gM.woda -= (short)Ogrod.KosztDzialania.WODA_OGROD;
-                        gM.stamina -= (short)Ogrod.KosztDzialania.STAMINA_OGROD;
-                    }
-
-                    else if (gM.stamina < (short)Ogrod.KosztDzialania.STAMINA_OGROD)
-                    {
-                        worker.czyPracuje = false;
-                        Debug.Log("Brakuje staminy");
-                    }
-
-                    if (czasPracyDoKonca == 0)
-                    {
-                        if (worker.trait == Trait.ZAWODOWY_OGRODNIK)
+                switch (tierOgrodu)
+                {
+                    case (short)Ogrod.RodzajOgrodu.OGROD:
+                        if (czasPracyDoKonca == 0)
                         {
-                            gM.jedzenie += (int)((short)Ogrod.Praca.PRODUKCJA_OGROD * Trait.MODYFIKATOR_OGRODNIK_TRAIT);
+                            if (worker.trait == Trait.ZAWODOWY_OGRODNIK)
+                            {
+                                gM.jedzenie += (int)((short)Ogrod.Praca.PRODUKCJA_OGROD * Trait.MODYFIKATOR_OGRODNIK_TRAIT);
+                            }
+                            else
+                            {
+                                gM.jedzenie += (short)Ogrod.Praca.PRODUKCJA_OGROD;
+                            }
+                            dostalemJedzenie = false;
+                            worker.czyPracuje = false;
+                            Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)Ogrod.Praca.PRODUKCJA_OGROD);
+                            Debug.Log("Poziom drewna wynosi:" + gM.jedzenie);
                         }
-                        else
-                        {
-                            gM.jedzenie += (short)Ogrod.Praca.PRODUKCJA_OGROD;
-                        }
-                        dostalemJedzenie = false;
-                        worker.czyPracuje = false;
-                        Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)Ogrod.Praca.PRODUKCJA_OGROD);
-                        Debug.Log("Poziom drewna wynosi:" + gM.jedzenie);
-                    }
-                    break;
-                case (short)Ogrod.RodzajOgrodu.PLANTACJA:
-                    if (gM.pora_dnia != 3 &&
-                        gM.stamina >= (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA)
-                    {
-                        czasPracyDoKonca--;
-                        gM.woda -= tierOgrodu;
-                        gM.stamina -= (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA;
-                    }
 
-                    else if (gM.stamina < (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA)
-                    {
-                        worker.czyPracuje = false;
-                        Debug.Log("Brakuje staminy");
-                    }
+                        else if (gM.pora_dnia != 3 &&
+                            gM.stamina >= (short)Ogrod.KosztDzialania.STAMINA_OGROD)
+                        {
+                            czasPracyDoKonca--;
+                            gM.woda -= (short)Ogrod.KosztDzialania.WODA_OGROD;
+                            gM.stamina -= (short)Ogrod.KosztDzialania.STAMINA_OGROD;
+                        }
 
-                    if (czasPracyDoKonca == 0)
-                    {
-                        if (worker.trait == Trait.ZAWODOWY_OGRODNIK)
+                        else if (gM.stamina < (short)Ogrod.KosztDzialania.STAMINA_OGROD)
                         {
-                            gM.jedzenie += (int)((short)Ogrod.Praca.PRODUKCJA_PLANTACJA * Trait.MODYFIKATOR_OGRODNIK_TRAIT);
+                            worker.czyPracuje = false;
+                            Debug.Log("Brakuje staminy");
                         }
-                        else
+                        break;
+
+                    case (short)Ogrod.RodzajOgrodu.PLANTACJA:
+                        if (czasPracyDoKonca == 0)
                         {
-                            gM.jedzenie += (short)Ogrod.Praca.PRODUKCJA_PLANTACJA;
+                            if (worker.trait == Trait.ZAWODOWY_OGRODNIK)
+                            {
+                                gM.jedzenie += (int)((short)Ogrod.Praca.PRODUKCJA_PLANTACJA * Trait.MODYFIKATOR_OGRODNIK_TRAIT);
+                            }
+                            else
+                            {
+                                gM.jedzenie += (short)Ogrod.Praca.PRODUKCJA_PLANTACJA;
+                            }
+
+                            dostalemJedzenie = false;
+                            worker.czyPracuje = false;
+                            Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)Ogrod.Praca.PRODUKCJA_PLANTACJA);
+                            Debug.Log("Poziom drewna wynosi:" + gM.jedzenie);
+                            worker.tagPracy = "Nie pracuje";
                         }
-                        
-                        dostalemJedzenie = false;
-                        worker.czyPracuje = false;
-                        Debug.Log("Robotnik " + worker.name + " wyprodukował: " + (short)Ogrod.Praca.PRODUKCJA_PLANTACJA);
-                        Debug.Log("Poziom drewna wynosi:" + gM.jedzenie);
-                    }
-                    worker.tagPracy = "Nie pracuje";
-                    break;
-                default:
-                    break;
+
+                        else if (gM.pora_dnia != 3 &&
+                            gM.stamina >= (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA)
+                        {
+                            czasPracyDoKonca--;
+                            gM.woda -= tierOgrodu;
+                            gM.stamina -= (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA;
+                        }
+
+                        else if (gM.stamina < (short)Ogrod.KosztDzialania.STAMIN_PLANTACJA)
+                        {
+                            worker.czyPracuje = false;
+                            Debug.Log("Brakuje staminy");
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+
             }
-            
-        }
+        } 
+      
     }//PracaWOgrodzie
     #region Budowa i Upgrade
 

@@ -6,6 +6,8 @@ public class Workshop : MonoBehaviour
 {
     public short tierWarsztatu;
 
+    public GameObject pracownik;
+
     //Budowa/upgrade
     private int pozostaleTuryDoBudowy;
 
@@ -57,7 +59,7 @@ public class Workshop : MonoBehaviour
     /// pracownika czyParcuje na false w CharacterCreator po zakonczeniu pracy
     /// </summary>
     /// <param name="pracownik"></param>
-    public void PracaWWarsztacie(GameObject pracownik)
+    public void PracaWWarsztacie()
     {
         if (gM.stoneAge)
         {

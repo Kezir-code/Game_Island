@@ -324,7 +324,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f0a27e8ef9a16499b109d84a666e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  people: []
+  people:
+  - {fileID: 6858308260941868464, guid: 0c365bafebad87b438562561c3641476, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   drewno: 0
   woda: 0
   dzien: 0
@@ -332,6 +351,18 @@ MonoBehaviour:
   stamina: 0
   kamien: 0
   jedzenie: 0
+  zelazo: 0
+  pojemnoscJedzenia: 100
+  pojemnoscWody: 200
+  pojemnoscSurowcow: 300
+  pracownicDoTartaku: []
+  pracownicyDoPomostu: []
+  pracownicyDoOgrodu: []
+  pracownikDoKuchni: {fileID: 0}
+  tierLegowskia: 0
+  dodatkowaStamina: 1
+  stoneAge: 0
+  ironAge: 0
 --- !u!4 &184026383
 Transform:
   m_ObjectHideFlags: 0
