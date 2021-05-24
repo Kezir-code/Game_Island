@@ -18,9 +18,29 @@ public class GameManager : Singleton<GameManager>
     public int stamina;
     public int kamien;
     public int jedzenie;
+    public int zelazo;
 
+    // Pojemność magazynu
+    public int pojemnoscJedzenia = 100;   // default 100
+    public int pojemnoscWody = 200;       // default 200  
+    public int pojemnoscSurowcow = 300;   // default 300
+
+    //bonusy z ogniska itp.
+    public bool ogniskoBonus;
+    public bool kuchniaBonus;
+
+    //Legowsiko
+    public int tierLegowskia;
+
+    //kuznia/warsztat
+    public bool stoneAge;
+    public bool ironAge;
+
+    //UI - wyświetlanie wartości
     public Text jedzenieText;
     public Text wodaText;
+
+    private Text textNazwisko;
 
     void Start()
     {
@@ -71,6 +91,25 @@ public class GameManager : Singleton<GameManager>
         dzien++;
     }
 
+    public void ZliczStamine()
+    {
+        foreach (GameObject kalski in people)
+        {
+            CharacterCreator character = kalski.GetComponent<CharacterCreator>();
+            if (!character.czyPracuje)
+            {
+                if (tierLegowskia == 0)
+                {
+                    stamina++;
+                }
+                else
+                {
+                    stamina = tierLegowskia + 1;
+                }
+            }
+        }
+    } // zlicz stamine
+
     public void Aktualizacja_UI_Surowce()
     {
         woda += 1;
@@ -86,5 +125,11 @@ public class GameManager : Singleton<GameManager>
         Debug.Log(woda.ToString());
         Debug.Log(jedzenie.ToString());
         */
+    }
+
+    public void TaskOnClick(string nazwisko)
+    {
+        Debug.Log(nazwisko);
+        //textNazwisko.text = nazwisko;       
     }
 }

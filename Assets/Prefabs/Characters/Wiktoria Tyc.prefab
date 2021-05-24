@@ -111,3 +111,5 @@ MonoBehaviour:
   surname: Tyc
   isAlive: 1
   lvl: 0
+  turyDoKoncaPracy: 0
+  czyPracuje: 1
