@@ -10,4 +10,5 @@ public class CharacterCreator : MonoBehaviour
     public int lvl;
     public int turyDoKoncaPracy;
     public bool czyPracuje;
+    public string trait;
 }
