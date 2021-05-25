@@ -8,9 +8,18 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
+    private Sawmill samwill;
+    private Warehouse warehouse;
+    private WaterCollector watercollector;
+    //private Garden garden;
+    //private FishingPier fishingpier;
+    //private Den den;
+    //private Campfire campfire;
+    //private Workshop workshow;
     private GameObject activeScreen;
     private Camera camera;
     public List<GameObject> people;
+    //public List<CharacterCreator> bla;
     public int drewno;
     public int woda;
     public int dzien;
@@ -55,6 +64,9 @@ public class GameManager : Singleton<GameManager>
     {
 
         pora_dnia = (pora_dnia + 1) % 3;
+        samwill.PracaWTartaku();
+        warehouse.SprawdzPojemnoscMaxSurowcow();
+        watercollector.PracaWZbierakuNaWode();
 
     }
 
